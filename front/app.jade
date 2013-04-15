@@ -1,0 +1,36 @@
+mixin field(title, name, type)
+	.field
+		label(for=name||title) #{title}
+		input(id=name||title, name=name||title, type=type||"text")
+
+mixin button(text, action)
+	button(id=action||text) #{text}
+
+!!!
+html	
+	head
+		title Expenses
+		link(href="/style.css", rel="stylesheet", type="text/css")
+		link(href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic&subset=latin,cyrillic", rel="stylesheet", type="text/css")
+		script(src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.5/require.min.js", data-main="app", type="text/javascript")
+	body
+		#viewport
+
+		script#main-menu-template(type="text/template")
+			h1 Expenses
+			a.button(href="#add") add expense
+
+		script#option-template(type="text/template")
+			button.option {{=it.name}}
+
+		script#options-template(type="text/template")
+			h1 Select...
+			div#options
+			mixin button("skip")
+
+		script#expense-editor-template(type="text/template")
+			h1 Expense
+			mixin field("what")
+			mixin field("where")
+			mixin field("price", "price", "number")
+			mixin button("submit")
