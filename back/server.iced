@@ -15,7 +15,8 @@ passport.serializeUser (user, done) ->
   done null, user._id
 
 passport.deserializeUser (obj, done) ->
-  done null, obj
+  models.User.getById obj, (err, user) ->
+    done null, user
 
 connectionString = process.env.CONNECTION_STRING or "mongodb://localhost/expenses"
 port = process.env.PORT or 3000
@@ -30,6 +31,8 @@ frontDir = __dirname + "/../front"
 
 app.use express.bodyParser()
 app.use express.cookieParser()
+app.use express.session
+  secret: "expenses-app"
 
 app.use passport.initialize()
 app.use passport.session()
@@ -56,6 +59,7 @@ app.get "/auth/google", passport.authenticate('google',
 app.get '/oauth2callback', 
   passport.authenticate('google', { successRedirect: '/login', failureRedirect: '/#login' }),
   (req, res) ->
+    #res.cookie('auth', 'cookievalue', { maxAge: 900000, httpOnly: true });
     res.redirect '/login'
 
 app.get '/logout',

@@ -16,6 +16,9 @@ User = mongoose.Schema
 User.statics.getByEmail = (email, done) ->
   @findOne(email: email).exec done
 
+User.statics.getById = (userId, done) ->
+  @findOne(_id: userId).exec done
+
 User.statics.getOrCreateByGoogleId = (params, done) ->
   query = googleId: params.googleId
   options = upsert: true
