@@ -29,6 +29,7 @@ app = express()
 
 frontDir = __dirname + "/../front"
 
+app.use express.static(frontDir + "/lib")
 app.use express.bodyParser()
 app.use express.cookieParser()
 app.use express.session
