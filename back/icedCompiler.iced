@@ -8,7 +8,9 @@ module.exports = (path) ->
 		return next() unless !error     
 		try
 			compiled = compiler.compile code                
-		catch error             
+		catch error    
+			console.log req.url         
+			console.log error
 			return next()
 		res.header "Content-Type", "text/javascript"
 		res.send compiled

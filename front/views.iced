@@ -50,4 +50,7 @@ define ["marionette"], (Marionette) ->
 				price: @ui.price.val()
 			@trigger "done"
 
+	exports.Login = Marionette.ItemView.extend
+		template: "#login-template"
+
 	exports

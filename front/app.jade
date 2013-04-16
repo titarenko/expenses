@@ -34,3 +34,13 @@ html
 			mixin field("where")
 			mixin field("price", "price", "number")
 			mixin button("submit")
+
+		script#login-template(type="text/template")
+			h1 Login to system
+			a.button(href="#googleAuth") Login via Google
+			br
+			input(type="text", placeholder="Enter email...")
+			br
+			input(type="password", placeholder="Enter password")
+			br
+			mixin button("submit")
