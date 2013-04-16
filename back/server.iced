@@ -6,24 +6,13 @@ require "express-resource"
 resources = require "./resources"
 mongoose = require "mongoose"
 passport = require 'passport'
-LocalStrategy = require('passport-local').Strategy
 models = require "./models/models"
-GoogleStrategy = require("passport-google-oauth").OAuth2Strategy
+auth = require "./auth"
 
-strategy = new GoogleStrategy
-  clientID: "836427388747.apps.googleusercontent.com",
-  clientSecret: "lMF07R7txxWa_scy0S1D_y6Y",
-  callbackURL: "http://localhost:3000/oauth2callback",
-  (accessToken, refreshToken, profile, done) ->
-    models.User.getOrCreateByGoogleId
-      googleId : profile._json.id, 
-      email: profile._json.email
-      , (err, user) ->
-        done err, user
+passport.use auth.GoogleAuthStrategy
 
-passport.use strategy
 passport.serializeUser (user, done) ->
-  done null, user
+  done null, user._id
 
 passport.deserializeUser (obj, done) ->
   done null, obj
