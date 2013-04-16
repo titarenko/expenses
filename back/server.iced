@@ -15,13 +15,18 @@ strategy = new GoogleStrategy
   clientSecret: "lMF07R7txxWa_scy0S1D_y6Y",
   callbackURL: "http://localhost:3000/oauth2callback",
   (accessToken, refreshToken, profile, done) ->
-    models.User.getByGoogleId
-      goodleId: accessToken
+    models.User.getOrCreateByGoogleId
+      googleId : profile._json.id, 
+      email: profile._json.email
       , (err, user) ->
-        console.log "user: " + user
         done err, user
 
 passport.use strategy
+passport.serializeUser (user, done) ->
+  done null, user
+
+passport.deserializeUser (obj, done) ->
+  done null, obj
 
 connectionString = process.env.CONNECTION_STRING or "mongodb://localhost/expenses"
 port = process.env.PORT or 3000
@@ -60,9 +65,9 @@ app.get "/auth/google", passport.authenticate('google',
   scope: ['https://www.googleapis.com/auth/userinfo.profile','https://www.googleapis.com/auth/userinfo.email'] })
 
 app.get '/oauth2callback', 
-  passport.authenticate('google', { successRedirect: '/',failureRedirect: '/login' }),
+  passport.authenticate('google', { successRedirect: '/login', failureRedirect: '/#login' }),
   (req, res) ->
-    res.redirect '/'
+    res.redirect '/login'
 
 app.get '/logout',
   (req, res) ->

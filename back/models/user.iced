@@ -1,8 +1,6 @@
 mongoose = require 'mongoose'
 
 User = mongoose.Schema
-  username:
-    type: String
   email:
     type: String
     required: true
@@ -18,10 +16,11 @@ User = mongoose.Schema
 User.statics.getByEmail = (email, done) ->
   @findOne(email: email).exec done
 
-User.statics.getByGoogleId = (googleId, done) ->
+User.statics.getOrCreateByGoogleId = (params, done) ->
+  query = googleId: params.googleId
   options = upsert: true
-  await @collection.findAndModify(googleId: googleId, options).exec defer error, user
-  return done error if error
-  return done null, user unless user
+  sort = {}
+  update = $set: googleId: params.googleId, email : params.email
+  @collection.findAndModify(query, sort, update, options, done)
 
 module.exports = mongoose.model "users", User
