@@ -18,7 +18,8 @@ define ["marionette", "controllers"], (Marionette, controllers) ->
 
 	exports.AuthRouter = Marionette.AppRouter.extend
 		appRoutes:
-			"login": "showLoginPage"
+			"login": "showLogin"
+			"signUp": "showSignUp"
 		controller:
 			controllers.AuthController
 

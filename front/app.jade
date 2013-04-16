@@ -12,7 +12,9 @@ html
 		title Expenses
 		link(href="/style.css", rel="stylesheet", type="text/css")
 		link(href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic&subset=latin,cyrillic", rel="stylesheet", type="text/css")
+		//link(href="/../lib/fonts.googleapis.com.css", rel="stylesheet", type="text/css")
 		script(src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.5/require.min.js", data-main="app", type="text/javascript")
+		//script(src="require_v2.1.5.min.js", data-main="app", type="text/javascript")
 	body
 		#viewport
 
@@ -36,11 +38,18 @@ html
 			mixin button("submit")
 
 		script#login-template(type="text/template")
+			a.button(href="#signUp")
+				| New in system? Sign Up!
 			h1 Login to system
-			a.button(href="#googleAuth") Login via Google
-			br
-			input(type="text", placeholder="Enter email...")
-			br
-			input(type="password", placeholder="Enter password")
-			br
-			mixin button("submit")
+			form(action="/login", method="post")
+				mixin field("Email", "email")
+				mixin field("Password", "password", "password")
+				input.button(type="submit", value="Log In")
+			a.button(href="/auth/google") Login via Google
+
+		script#sign-up-template(type="text/template")
+			h1 Register in system
+			mixin field("Email","email")
+			mixin field("Password", "password", "password")
+			a.button(href="submit") Sign Up
+

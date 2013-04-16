@@ -5,6 +5,23 @@ icedCompiler = require "./icedCompiler"
 require "express-resource"
 resources = require "./resources"
 mongoose = require "mongoose"
+passport = require 'passport'
+LocalStrategy = require('passport-local').Strategy
+models = require "./models/models"
+GoogleStrategy = require("passport-google-oauth").OAuth2Strategy
+
+strategy = new GoogleStrategy
+  clientID: "836427388747.apps.googleusercontent.com",
+  clientSecret: "lMF07R7txxWa_scy0S1D_y6Y",
+  callbackURL: "http://localhost:3000/oauth2callback",
+  (accessToken, refreshToken, profile, done) ->
+    models.User.getByGoogleId
+      goodleId: accessToken
+      , (err, user) ->
+        console.log "user: " + user
+        done err, user
+
+passport.use strategy
 
 connectionString = process.env.CONNECTION_STRING or "mongodb://localhost/expenses"
 port = process.env.PORT or 3000
@@ -18,6 +35,11 @@ app = express()
 frontDir = __dirname + "/../front"
 
 app.use express.bodyParser()
+app.use express.cookieParser()
+
+app.use passport.initialize()
+app.use passport.session()
+
 app.use lessCompiler frontDir
 app.use icedCompiler frontDir
 
@@ -31,6 +53,24 @@ app.resource "prices", resources.prices
 
 app.get "/", (req, res) ->
 	res.render "app"
+
+app.get "/auth/google", passport.authenticate('google', 
+  { successRedirect: '/', 
+  failureRedirect: '/login' , 
+  scope: ['https://www.googleapis.com/auth/userinfo.profile','https://www.googleapis.com/auth/userinfo.email'] })
+
+app.get '/oauth2callback', 
+  passport.authenticate('google', { successRedirect: '/',failureRedirect: '/login' }),
+  (req, res) ->
+    res.redirect '/'
+
+app.get '/logout',
+  (req, res) ->
+    req.logout()
+    res.redirect('/')
+
+app.get '/login', (req, res) ->
+  res.json user: req.user
 
 app.listen port, -> 
 	log.info "Listening on #{port}..."
