@@ -62,4 +62,19 @@ define ["bus", "views", "models"], (bus, views, models) ->
 						item: item 
 						place: place
 
+	exports.AuthController = 
+		showLogin: ->
+			view = new views.Login
+				model: new models.Login
+
+			bus.trigger "show", view
+
+			view.on "signUp", ->
+				@showSignUpPage()
+
+		showSignUp:->
+			view = new views.SignUp
+				model: new models.Login
+			bus.trigger "show", view
+
 	exports

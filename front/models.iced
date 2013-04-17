@@ -14,4 +14,6 @@ define ["backbone"], (Backbone) ->
 	exports.LatestPrice = Backbone.Model.extend
 		url: "prices"
 
+	exports.Login = Backbone.Model.extend()
+
 	exports

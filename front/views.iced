@@ -50,4 +50,40 @@ define ["marionette"], (Marionette) ->
 				price: @ui.price.val()
 			@trigger "done"
 
+	exports.Login = Marionette.ItemView.extend
+		template: "#login-template"
+
+		ui:
+			email: "#email"
+			password: "#password"
+
+		events:
+			"click #signUp": "signUp"
+			"click #submit": "loginAct"
+
+		loginAct: ->
+			@model.set
+				email: @ui.email.val()
+				password : @ui.password.val()
+
+		signUp: ->
+			console.log "catched"
+			@trigger "signUp"
+
+	exports.SignUp = Marionette.ItemView.extend
+		template: "#sign-up-template"
+
+		ui:
+			email: "#email"
+			password: "#password"
+
+		events: 
+			"click #submit" : "register"
+
+		register:->
+			model.set
+				email: @ui.email.val()
+				password: @ui.password.lav()
+			@trigger "register"
+
 	exports

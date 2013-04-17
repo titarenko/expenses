@@ -1,15 +1,14 @@
 require.config
-
 	paths:
-		jquery: "http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min"
-		underscore: "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.3/underscore-min"
-		backbone: "http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min"
-		marionette: "http://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/1.0.0-rc6-bundled/backbone.marionette.min"
-		moment: "http://cdnjs.cloudflare.com/ajax/libs/moment.js/1.7.2/moment.min"
-		dot: "http://olado.github.io/doT/doT.min"
-		spinner: "http://fgnass.github.io/spin.js/dist/spin.min.js?v=1.2.8"
-		d3: "http://cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min"
-		validate: "http://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.0/jquery.validate.min"
+		jquery: "jquery_v1.9.0.min"
+		underscore: "underscore_v1.4.3.min"
+		backbone: "backbone_v1.0.0.min"
+		marionette: "backbone.marionette_v1.0.0-rc6.min"
+		moment: "moment_v1.7.2.min"
+		dot: "doT_v1.0.0.min"
+		spinner: "spin_v1.2.8.min"
+		d3: "d3_v3.0.8.min"
+		validate: "jquery.validate_v1.11.0.min"
 
 	shim:
 		jquery: exports: "$"
@@ -37,6 +36,7 @@ require ["marionette", "dot", "routers", "bus"], (Marionette, doT, routers, bus)
 	app.addInitializer ->
 		router = new routers.MainMenuRouter()
 		new routers.ExpenseWizardRouter()
+		new routers.AuthRouter()
 
 		bus.on "show", (view) ->
 			app.viewport.show view
