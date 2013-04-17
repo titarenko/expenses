@@ -51,3 +51,8 @@ html
 			mixin field("Password", "password", "password")
 			a.button(href="submit") Sign Up
 
+		script#history-item-template(type="text/template")
+			p <strong>{{=it.item}}</strong>. Покупка совершена в месте <strong>{{=it.place}}</strong> по цене <strong>{{=it.price}}</strong>
+
+		script#empty-template(type="text/template")
+			p Loading....

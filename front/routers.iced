@@ -23,4 +23,10 @@ define ["marionette", "controllers"], (Marionette, controllers) ->
 		controller:
 			controllers.AuthController
 
+	exports.StatisticsRouter = Marionette.AppRouter.extend
+		appRoutes:
+			"history": "showHistory"
+		controller:
+			controllers.HistoryController
+
 	exports

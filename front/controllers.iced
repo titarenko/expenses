@@ -77,4 +77,13 @@ define ["bus", "views", "models"], (bus, views, models) ->
 				model: new models.Login
 			bus.trigger "show", view
 
+	exports.HistoryController = 
+		showHistory:->
+			lastExpenses = new models.LastExpenses
+			view = new views.History 
+				collection: lastExpenses
+
+			bus.trigger "show", view
+			lastExpenses.fetch()
+
 	exports

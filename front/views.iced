@@ -1,5 +1,8 @@
 define ["marionette"], (Marionette) ->
 
+	Empty = Marionette.ItemView.extend
+		template: "#empty-template"
+
 	exports = {}
 
 	exports.MainMenu = Marionette.ItemView.extend
@@ -85,5 +88,14 @@ define ["marionette"], (Marionette) ->
 				email: @ui.email.val()
 				password: @ui.password.lav()
 			@trigger "register"
+			#TODO: add logic into controller
+
+	exports.HistoryItem = HistoryItem = Marionette.ItemView.extend
+		template: "#history-item-template"
+
+	exports.History = Marionette.CollectionView.extend
+		itemView: HistoryItem
+		emptyView: Empty
+
 
 	exports

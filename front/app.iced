@@ -37,6 +37,7 @@ require ["marionette", "dot", "routers", "bus"], (Marionette, doT, routers, bus)
 		router = new routers.MainMenuRouter()
 		new routers.ExpenseWizardRouter()
 		new routers.AuthRouter()
+		new routers.StatisticsRouter()
 
 		bus.on "show", (view) ->
 			app.viewport.show view
