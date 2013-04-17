@@ -9,6 +9,8 @@ require.config
 		spinner: "spin_v1.2.8.min"
 		d3: "d3_v3.0.8.min"
 		validate: "jquery.validate_v1.11.0.min"
+		highcharts: "highcharts_v3.0.1.min"
+		highcharts_exporting: "highcharts_exporting_v3.0.1.min"
 
 	shim:
 		jquery: exports: "$"
@@ -19,6 +21,8 @@ require.config
 		marionette:
 			deps: ["backbone", "moment"]
 			exports: "Marionette"
+		highcharts:
+			deps:["highcharts_exporting"]
 		moment: exports: "moment"
 		dot: exports: "doT"
 		d3: exports: "d3"
