@@ -30,7 +30,7 @@ define ["marionette"], (Marionette) ->
 			price: "#price"
 
 		events:
-			"click #submit": "saveExpense"
+			"click #save": "saveExpense"
 
 		initialize: ->
 			@listenTo @model, "change:price", @updatePrice
