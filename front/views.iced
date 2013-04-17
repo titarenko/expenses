@@ -104,4 +104,11 @@ define ["marionette"], (Marionette) ->
 			history: "#history"
 			chart: "#chart"
 
+	exports.Chart = Marionette.View.extend
+		
+		initialize:  ->
+			@listenTo @collection, "sync", @plot
+
+		plot:->
+
 	exports
