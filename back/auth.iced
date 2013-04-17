@@ -1,7 +1,7 @@
 passport = require 'passport'
 models = require "./models/models"
 GoogleStrategy = require("passport-google-oauth").OAuth2Strategy
-LocalStrategy = require('passport-local').Strategy
+#LocalStrategy = require('passport-local').Strategy
 
 GoogleAuthStrategy = new GoogleStrategy
   clientID: "836427388747.apps.googleusercontent.com",
