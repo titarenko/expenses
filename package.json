@@ -6,13 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "",
+  "repository": "https://github.com/titarenko/expenses",
   "keywords": [
     "expenses",
     "tracking",
     "analysis"
   ],
-  "author": "Constantin Titarenko",
+  "author": "Expenses Team",
   "license": "BSD",
   "dependencies": {
     "iced-coffee-script": "~1.4.0c",
