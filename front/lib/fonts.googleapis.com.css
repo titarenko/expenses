@@ -2,23 +2,23 @@
   font-family: 'Noto Sans';
   font-style: normal;
   font-weight: 400;
-  src: local('Noto Sans'), local('NotoSans'), url(http://themes.googleusercontent.com/static/fonts/notosans/v1/iLJc6PpCnnbQjYc1Jq4v0z8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+  src: local('Noto Sans'), local('NotoSans'), url(NotoSans.woff) format('woff');
 }
 @font-face {
   font-family: 'Noto Sans';
   font-style: normal;
   font-weight: 700;
-  src: local('Noto Sans Bold'), local('NotoSans-Bold'), url(http://themes.googleusercontent.com/static/fonts/notosans/v1/PIbvSEyHEdL91QLOQRnZ14raN7vELC11_xip9Rz-hMs.woff) format('woff');
+  src: local('Noto Sans Bold'), local('NotoSans-Bold'), url(NotoSans-Bold.woff) format('woff');
 }
 @font-face {
   font-family: 'Noto Sans';
   font-style: italic;
   font-weight: 400;
-  src: local('Noto Sans Italic'), local('NotoSans-Italic'), url(http://themes.googleusercontent.com/static/fonts/notosans/v1/ByLA_FLEa-16SpQuTcQn4GOb2gHztoQeulij-1lvl-8.woff) format('woff');
+  src: local('Noto Sans Italic'), local('NotoSans-Italic'), url(NotoSans-Italic.woff) format('woff');
 }
 @font-face {
   font-family: 'Noto Sans';
   font-style: italic;
   font-weight: 700;
-  src: local('Noto Sans Bold Italic'), local('NotoSans-BoldItalic'), url(http://themes.googleusercontent.com/static/fonts/notosans/v1/9Z3uUWMRR7crzm1TjRicDlRROVH9Vvc8xHnAGvvgPQc.woff) format('woff');
+  src: local('Noto Sans Bold Italic'), local('NotoSans-BoldItalic'), url(NotoSans-BoldItalic.woff) format('woff');
 }
