@@ -1,3 +1,4 @@
+log = require "./log"
 fs = require "fs"
 compiler = require "iced-coffee-script"
 
@@ -9,7 +10,7 @@ module.exports = (path) ->
 		try
 			compiled = compiler.compile code
 		catch error
-			console.log "Error in Iced Compiler. Url: " + req.url + " Error: " + error
+			log.error "Error in Iced Compiler. Url: " + req.url + " Error: " + error
 			return next()
 		res.header "Content-Type", "text/javascript"
 		res.send compiled
