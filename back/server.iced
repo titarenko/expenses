@@ -44,7 +44,7 @@ app.resource "prices", resources.prices
 app.get "/", (req, res) ->
 	res.render "app"
 
-app.use auth
+#app.use auth
 
 app.listen port, -> 
 	log.info "Listening on #{port}..."
