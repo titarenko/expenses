@@ -4,6 +4,7 @@
   "description": "Expenses tracking and analysis system",
   "main": "back/server.iced",
   "scripts": {
+    "start": "iced back/server.iced",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "https://github.com/titarenko/expenses",
@@ -23,6 +24,7 @@
     "express-resource": "~1.0.0",
     "mongoose": "~3.6.4",
     "async": "~0.2.6",
-    "passport": "~0.1.16"
+    "passport": "~0.1.16",
+    "passport-google-oauth": "~0.1.5"
   }
 }
