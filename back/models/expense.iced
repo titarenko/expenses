@@ -20,4 +20,7 @@ Expense = mongoose.Schema
 Expense.statics.getAll = (done) ->
 	@find().sort("-date").exec done
 
+Expense.statics.getLast =(done)->
+	@find().sort("-date").limit("20").exec done
+
 module.exports = mongoose.model "expenses", Expense

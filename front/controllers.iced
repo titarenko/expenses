@@ -79,11 +79,14 @@ define ["bus", "views", "models"], (bus, views, models) ->
 
 	exports.HistoryController = 
 		showHistory:->
-			lastExpenses = new models.LastExpenses
-			view = new views.History 
-				collection: lastExpenses
+			layout = new views.StatisticsLayout
+			bus.trigger "show", layout
 
-			bus.trigger "show", view
+			lastExpenses = new models.LastExpenses
+
+			layout.history.show new views.History collection: lastExpenses
+			layout.chart.show new views.Chart collection: lastExpenses
+
 			lastExpenses.fetch()
 
 	exports

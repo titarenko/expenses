@@ -6,6 +6,8 @@ mixin field(title, name, type)
 mixin button(text, action)
 	button(id=action||text) #{text}
 
+//{{##def.startWithUpper = function(text) {	text[0] = text[0].toUpperCase();	return text;}#}}
+
 !!!
 html	
 	head
@@ -14,6 +16,7 @@ html
 		link(href="fonts.googleapis.com.css", rel="stylesheet", type="text/css")
 		script(src="require_v2.1.5.min.js", data-main="app", type="text/javascript")
 	body
+		
 		#viewport
 
 		script#main-menu-template(type="text/template")
@@ -51,8 +54,15 @@ html
 			mixin field("Password", "password", "password")
 			a.button(href="submit") Sign Up
 
+		script#statistics-template(type="text/template")
+			#chart
+			#history
+
 		script#history-item-template(type="text/template")
-			p <strong>{{=it.item}}</strong>. Покупка совершена в месте <strong>{{=it.place}}</strong> по цене <strong>{{=it.price}}</strong>
+			p  <strong>{{=it.item}}</strong>. Покупка совершена в месте <strong> {{=it.place}}</strong> по цене <strong>{{=it.price}}</strong>
+
+		script#history-template(type="text/template")
+			h1 History
 
 		script#empty-template(type="text/template")
-			p Loading....
+			p Loading, please wait....

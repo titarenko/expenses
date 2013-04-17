@@ -93,9 +93,15 @@ define ["marionette"], (Marionette) ->
 	exports.HistoryItem = HistoryItem = Marionette.ItemView.extend
 		template: "#history-item-template"
 
-	exports.History = Marionette.CollectionView.extend
+	exports.History = Marionette.CompositeView.extend
+		template: "#history-template"
 		itemView: HistoryItem
 		emptyView: Empty
 
+	exports.StatisticsLayout = Marionette.Layout.extend
+		template: "#statistics-template"
+		regions:
+			history: "#history"
+			chart: "#chart"
 
 	exports
