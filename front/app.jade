@@ -59,7 +59,12 @@ html
 			#history
 
 		script#history-item-template(type="text/template")
-			p  <strong>{{=it.item}}</strong>. Покупка совершена в месте <strong> {{=it.place}}</strong> по цене <strong>{{=it.price}}</strong>
+			.history-entity
+				.history-left-side
+					.history-item {{=it.item}}
+					.history-place {{=it.place}}
+				.history-right-side
+					.history-price {{=it.price}}
 
 		script#history-template(type="text/template")
 			h1 History

@@ -18,7 +18,7 @@ module.exports =
 			models.Expense.getAll respond arguments
 		create: (req, res) ->
 			async.series [
-				(done) -> (new models.Expense req.body).save done
+				(done) -> models.Expense.save req.body.save, done
 				(done) -> async.parallel [
 					(done) -> models.Item.hit req.body.item, done
 					(done) -> models.Place.hit req.body.item, req.body.place, done
