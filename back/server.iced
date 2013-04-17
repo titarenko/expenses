@@ -5,18 +5,10 @@ icedCompiler = require "./icedCompiler"
 require "express-resource"
 resources = require "./resources"
 mongoose = require "mongoose"
-passport = require 'passport'
 models = require "./models/models"
+passport = require 'passport'
 auth = require "./auth"
 
-passport.use auth.GoogleAuthStrategy
-
-passport.serializeUser (user, done) ->
-  done null, user._id
-
-passport.deserializeUser (obj, done) ->
-  models.User.getById obj, (err, user) ->
-    done null, user
 
 connectionString = process.env.CONNECTION_STRING or "mongodb://localhost/expenses"
 port = process.env.PORT or 3000
@@ -52,24 +44,7 @@ app.resource "prices", resources.prices
 app.get "/", (req, res) ->
 	res.render "app"
 
-app.get "/auth/google", passport.authenticate('google', 
-  { successRedirect: '/', 
-  failureRedirect: '/login' , 
-  scope: ['https://www.googleapis.com/auth/userinfo.profile','https://www.googleapis.com/auth/userinfo.email'] })
-
-app.get '/oauth2callback', 
-  passport.authenticate('google', { successRedirect: '/login', failureRedirect: '/#login' }),
-  (req, res) ->
-    #res.cookie('auth', 'cookievalue', { maxAge: 900000, httpOnly: true });
-    res.redirect '/login'
-
-app.get '/logout',
-  (req, res) ->
-    req.logout()
-    res.redirect('/')
-
-app.get '/login', (req, res) ->
-  res.json user: req.user
+app.use auth
 
 app.listen port, -> 
 	log.info "Listening on #{port}..."
