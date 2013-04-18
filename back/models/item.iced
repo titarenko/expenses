@@ -15,7 +15,6 @@ Item.statics.hit = (item, done) ->
 	query = name: item.toLowerCase()
 	modification = $inc: frequency: 1
 	options = upsert: true
-	console.log(item)
 	@update query, modification, options, done
 
 Item.statics.getFrequent = (done) ->

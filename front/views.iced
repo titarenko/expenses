@@ -131,8 +131,11 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 				title:
 					text: "Your expences persentage"
 				tooltip:
-					pointFormat: "{series.name}: <b>{point.percentage}%</b>"
-					percentageDecimals: 1
+					formatter: ->
+						name = @point.name.charAt(0).toUpperCase() + @point.name.slice(1)
+						"<b>" + name + "</b>: " + @percentage.toFixed(2) + " %"
+					#pointFormat: "{series.name}: <b>{point.percentage}%</b>"
+					percentageDecimals: 2
 				plotOptions:
 						pie:
 							allowPointSelect: true
@@ -144,7 +147,6 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 								formatter: ->
 									name = @point.name.charAt(0).toUpperCase() + @point.name.slice(1)
 									"<b>" + name + "</b>: " + @percentage.toFixed(2) + " %"
-
 				series: [{
 					type: 'pie',
 					data: dataItems
