@@ -129,7 +129,7 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 					plotBorderWidth: null
 					plotShadow: false
 				title:
-					text: "Browser market shares at a specific website, 2010"
+					text: "Your expences persentage"
 				tooltip:
 					pointFormat: "{series.name}: <b>{point.percentage}%</b>"
 					percentageDecimals: 1
