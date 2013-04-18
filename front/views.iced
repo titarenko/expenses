@@ -142,7 +142,8 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 								color: "#000000"
 								connectorColor: "#000000"
 								formatter: ->
-									"<b>" + @point.name + "</b>: " + @percentage.toFixed(2) + " %"
+									name = @point.name.charAt(0).toUpperCase() + @point.name.slice(1)
+									"<b>" + name + "</b>: " + @percentage.toFixed(2) + " %"
 
 				series: [{
 					type: 'pie',
