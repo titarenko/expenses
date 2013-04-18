@@ -85,6 +85,7 @@ define ["bus", "views", "models"], (bus, views, models) ->
 			lastExpenses = new models.LastExpenses
 
 			layout.history.show new views.History collection: lastExpenses
+
 			layout.chart.show new views.Chart collection: lastExpenses
 
 			lastExpenses.fetch()

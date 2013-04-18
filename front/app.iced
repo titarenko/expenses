@@ -11,8 +11,8 @@ require.config
 		validate: "jquery.validate_v1.11.0.min"
 		highcharts: "highcharts_v3.0.1.min"
 		highcharts_exporting: "highcharts_exporting_v3.0.1.min"
-		#linqjs: "linq_v3.0.3-Beta4.min"
-		linqjs: "jquery.linq_v2.2.0.2.min"
+		linqjs: "linq_v3.0.3-Beta4.min"
+		#linqjs: "jquery.linq_v2.2.0.2.min"
 
 	shim:
 		jquery: exports: "$"
@@ -26,8 +26,6 @@ require.config
 		moment: exports: "moment"
 		dot: exports: "doT"
 		d3: exports: "d3"
-#		highcharts:
-#			deps:["highcharts_exporting"]
 		highcharts_exporting:
 			deps:["highcharts"]
 		linqjs: exports: "linqjs"

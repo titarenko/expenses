@@ -1,4 +1,4 @@
-define ["marionette", "highcharts_exporting", "highcharts", "jquery"], (Marionette, HighchartsExporting, highcharts, $) ->
+define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"], (Marionette, HighchartsExporting, highcharts, $, Enumerable) ->
 
 	Empty = Marionette.ItemView.extend
 		template: "#empty-template"
@@ -110,15 +110,18 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery"], (Marionet
 
 		plot:->
 
-			list = @collection.toJSON()
+			list = Enumerable.from(@collection.toJSON())
 
-			
-		#	value = Enumerable
-		#		.From(list)
-		#		.GroupBy("$.item")
-		#		.Sum("$.price")
-		#		.toArray()
-			#console.log value
+			totalSum = list.sum((x) -> x.price)
+
+			dataItems = list
+			.groupBy((x) -> x.item)
+			.select((x)->
+				source = Enumerable.from(x)
+				percentage = (source.sum("$.price") * 100/ totalSum).toFixed(2)
+				new Array(source.first().item, parseFloat(percentage))
+				)
+			.toArray()
 
 			options = 
 				chart:
@@ -139,18 +142,11 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery"], (Marionet
 								color: "#000000"
 								connectorColor: "#000000"
 								formatter: ->
-									"<b>" + @point.name + "</b>: " + @percentage + " %"
+									"<b>" + @point.name + "</b>: " + @percentage.toFixed(2) + " %"
 
 				series: [{
 					type: 'pie',
-					data: [
-							['Firefox',45.0],
-							['IE',26.8],
-							['Chrome', 12.8]
-							['Safari',8.5],
-							['Opera',6.2],
-							['Others',0.7]
-						]
+					data: dataItems
 					}]
 
 			@$el.highcharts options
