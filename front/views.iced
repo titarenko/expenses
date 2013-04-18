@@ -87,6 +87,7 @@ define ["marionette"], (Marionette) ->
 			@trigger "register"
 
 	NoExpense = Marionette.ItemView.extend
+		tagName: "tr"
 		template: "#no-expense-template"
 
 	Expense = Marionette.ItemView.extend
