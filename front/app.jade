@@ -6,8 +6,6 @@ mixin field(title, name, type)
 mixin button(text, action)
 	button(id=action||text) #{text}
 
-//{{##def.startWithUpper = function(text) {	text[0] = text[0].toUpperCase();	return text;}#}}
-
 !!!
 html	
 	head
@@ -16,7 +14,6 @@ html
 		link(href="fonts.googleapis.com.css", rel="stylesheet", type="text/css")
 		script(src="require_v2.1.5.min.js", data-main="app", type="text/javascript")
 	body
-		
 		#viewport
 
 		script#main-menu-template(type="text/template")
