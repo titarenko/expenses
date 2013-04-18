@@ -86,4 +86,16 @@ define ["marionette"], (Marionette) ->
 				password: @ui.password.lav()
 			@trigger "register"
 
+	NoExpense = Marionette.ItemView.extend
+		template: "#no-expense-template"
+
+	Expense = Marionette.ItemView.extend
+		template: "#expense-template"
+
+	exports.Expenses = Marionette.CompositeView.extend
+		template: "#expenses-template"
+		itemView: Expense
+		itemViewContainer: "tbody"
+		emptyView: NoExpense
+
 	exports

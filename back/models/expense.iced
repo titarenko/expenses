@@ -1,4 +1,5 @@
 mongoose = require "mongoose"
+require 'datejs'
 
 Expense = mongoose.Schema
 	item: 
@@ -20,4 +21,17 @@ Expense = mongoose.Schema
 Expense.statics.getAll = (done) ->
 	@find().sort("-date").exec done
 
+Expense.statics.getBetween = (begin, end, done) ->
+	@find(date: $gte: begin, $lt: end).sort("-date").exec done
+
+Expense.statics.getThisWeek = (done) ->
+	startOfWeek = Date.today().previous().monday()
+	endOfWeek = startOfWeek.addDays 7
+	@getBetween startOfWeek, endOfWeek, done
+
+Expense.statics.getThisMonth = (done) ->
+	startOfMonth = Date.today().moveToFirstDayOfMonth()
+	endOfMonth = startOfMonth.addMonths 1
+	@getBetween startOfMonth, endOfMonth, done
+	
 module.exports = mongoose.model "expenses", Expense

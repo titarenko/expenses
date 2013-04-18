@@ -5,6 +5,10 @@ define ["bus", "views", "models"], (bus, views, models) ->
 	exports.MainMenuController =
 		showMenu: ->
 			bus.trigger "show", new views.MainMenu
+		showHistory: (range) ->
+			expenses = new models.Expenses
+			bus.trigger "show", new views.Expenses collection: expenses
+			expenses.fetch data: range: range
 
 	exports.ExpenseWizardController =
 		showFrequentItems: ->

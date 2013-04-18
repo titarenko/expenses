@@ -15,7 +15,8 @@ respond = (params) ->
 module.exports = 
 	expenses:
 		index: (req, res) ->
-			models.Expense.getAll respond arguments
+			method = (week: "getThisWeek", month: "getThisMonth")[req.query.range] or "getAll"
+			models.Expense[method] respond arguments
 		create: (req, res) ->
 			async.series [
 				(done) -> (new models.Expense req.body).save done

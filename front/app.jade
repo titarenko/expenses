@@ -17,19 +17,21 @@ html
 		#viewport
 
 		script#main-menu-template(type="text/template")
-			h1 Expenses
+			h1 expenses
 			a.button(href="#add") add expense
+			a.button(href="#history/week") show this week
+			a.button(href="#history/month") show this month
 
 		script#option-template(type="text/template")
 			button.option {{=it.name}}
 
 		script#options-template(type="text/template")
-			h1 Select...
-			div#options
+			h1 select option
+			#options
 			mixin button("skip")
 
 		script#expense-editor-template(type="text/template")
-			h1 Expense
+			h1 edit expense
 			mixin field("what")
 			mixin field("where")
 			mixin field("price", "price", "number")
@@ -50,3 +52,26 @@ html
 			mixin field("Email","email")
 			mixin field("Password", "password", "password")
 			a.button(href="submit") Sign Up
+
+		script#expenses-template(type="text/template")
+			h1 history
+			table
+				thead
+					tr
+						th Date
+						th Item
+						th Place
+						th Price
+				tbody
+			a.button(href="#") back
+
+		script#expense-template(type="text/template")
+			tr
+				td {{=it.date}}
+				td {{=it.item}}
+				td {{=it.place}}
+				td {{=it.price}}
+
+		script#no-expense-template(type="text/template")
+			tr
+				td(colspan="4") Nothing to show yet...

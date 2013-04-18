@@ -5,6 +5,7 @@ define ["marionette", "controllers"], (Marionette, controllers) ->
 	exports.MainMenuRouter = Marionette.AppRouter.extend
 		appRoutes:
 			"": "showMenu"
+			"history/:range": "showHistory"
 		controller: 
 			controllers.MainMenuController
 
