@@ -99,5 +99,11 @@ define ["marionette"], (Marionette) ->
 		itemView: Expense
 		itemViewContainer: "tbody"
 		emptyView: NoExpense
+		ui:
+			total: "#total"
+		initialize: ->
+			@listenTo @collection, "sync", @updateTotalPrice	
+		updateTotalPrice: ->
+			@ui.total.text @collection.getTotalPrice().toFixed 2
 
 	exports

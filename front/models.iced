@@ -18,5 +18,9 @@ define ["backbone"], (Backbone) ->
 
 	exports.Expenses = Backbone.Collection.extend
 		url: "expenses"
+		getTotalPrice: ->
+			reduction = (memo, item) ->
+				memo + item.get "price"
+			@reduce reduction, 0 
 
 	exports
