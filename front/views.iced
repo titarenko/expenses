@@ -20,7 +20,7 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 		itemView: Option
 		className: "button-group"
 		events:
-			"click #skip": "skipStep"
+			"click #new": "skipStep"
 		skipStep: ->
 			@collection.trigger "skipped"
 
@@ -33,7 +33,7 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 			price: "#price"
 
 		events:
-			"click #submit": "saveExpense"
+			"click #save": "saveExpense"
 
 		initialize: ->
 			@listenTo @model, "change:price", @updatePrice
@@ -151,5 +151,25 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 					}]
 
 			@$el.highcharts options
+
+	NoExpense = Marionette.ItemView.extend
+		tagName: "tr"
+		template: "#no-expense-template"
+
+	Expense = Marionette.ItemView.extend
+		tagName: "tr"
+		template: "#expense-template"
+
+	exports.Expenses = Marionette.CompositeView.extend
+		template: "#expenses-template"
+		itemView: Expense
+		itemViewContainer: "tbody"
+		emptyView: NoExpense
+		ui:
+			total: "#total"
+		initialize: ->
+			@listenTo @collection, "sync", @updateTotalPrice
+		updateTotalPrice: ->
+			@ui.total.text @collection.getTotalPrice().toFixed 2
 
 	exports

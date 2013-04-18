@@ -4,15 +4,16 @@
   "description": "Expenses tracking and analysis system",
   "main": "back/server.iced",
   "scripts": {
+    "start": "iced back/server.iced",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "",
+  "repository": "https://github.com/titarenko/expenses",
   "keywords": [
     "expenses",
     "tracking",
     "analysis"
   ],
-  "author": "Constantin Titarenko",
+  "author": "Expenses Team",
   "license": "BSD",
   "dependencies": {
     "iced-coffee-script": "~1.4.0c",
@@ -24,6 +25,8 @@
     "mongoose": "~3.6.4",
     "async": "~0.2.6",
     "passport": "~0.1.16",
-    "passport-google-oauth": ">0.1"
+    "passport-google-oauth": "~0.1.5",
+    "datejs": "0.0.2",
+    "should": "~1.2.2"
   }
 }

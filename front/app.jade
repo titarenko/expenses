@@ -17,23 +17,26 @@ html
 		#viewport
 
 		script#main-menu-template(type="text/template")
-			h1 Expenses
+			h1 expenses
 			a.button(href="#add") add expense
+			a.button(href="#history/week") show this week
+			a.button(href="#history/month") show this month
 
 		script#option-template(type="text/template")
 			button.option {{=it.name}}
 
 		script#options-template(type="text/template")
-			h1 Select...
-			div#options
-			mixin button("skip")
+			h1 select option
+			#options
+			mixin button("new")
 
 		script#expense-editor-template(type="text/template")
-			h1 Expense
+			h1 edit expense
 			mixin field("what")
 			mixin field("where")
 			mixin field("price", "price", "number")
-			mixin button("submit")
+			mixin button("save")
+			a.button(href="#") cancel
 
 		script#login-template(type="text/template")
 			a.button(href="#signUp")
@@ -68,3 +71,28 @@ html
 
 		script#empty-template(type="text/template")
 			p Loading, please wait....
+
+		script#expenses-template(type="text/template")
+			h1 history
+			p
+				strong 
+					| Total:&nbsp;
+					span#total
+			table
+				thead
+					tr
+						th Item
+						th Price
+						th Place
+						th Date
+				tbody
+			a.button(href="#") back
+
+		script#expense-template(type="text/template")
+			td {{=it.item}}
+			td.number {{=it.price.toFixed(2)}}
+			td.muted {{=it.place}}
+			td.muted {{=moment(it.date).calendar()}}
+
+		script#no-expense-template(type="text/template")
+			td(colspan="4") Nothing to show yet...
