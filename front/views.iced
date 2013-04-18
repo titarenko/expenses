@@ -17,7 +17,7 @@ define ["marionette"], (Marionette) ->
 		itemView: Option
 		className: "button-group"
 		events:
-			"click #skip": "skipStep"
+			"click #new": "skipStep"
 		skipStep: ->
 			@collection.trigger "skipped"
 
@@ -90,6 +90,7 @@ define ["marionette"], (Marionette) ->
 		template: "#no-expense-template"
 
 	Expense = Marionette.ItemView.extend
+		tagName: "tr"
 		template: "#expense-template"
 
 	exports.Expenses = Marionette.CompositeView.extend

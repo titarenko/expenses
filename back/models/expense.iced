@@ -26,12 +26,12 @@ Expense.statics.getBetween = (begin, end, done) ->
 
 Expense.statics.getThisWeek = (done) ->
 	startOfWeek = Date.today().previous().monday()
-	endOfWeek = startOfWeek.addDays 7
+	endOfWeek = startOfWeek.clone().addDays 7
 	@getBetween startOfWeek, endOfWeek, done
 
 Expense.statics.getThisMonth = (done) ->
 	startOfMonth = Date.today().moveToFirstDayOfMonth()
-	endOfMonth = startOfMonth.addMonths 1
+	endOfMonth = startOfMonth.clone().addMonths 1
 	@getBetween startOfMonth, endOfMonth, done
 	
 module.exports = mongoose.model "expenses", Expense

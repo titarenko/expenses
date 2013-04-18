@@ -26,6 +26,7 @@
     "async": "~0.2.6",
     "passport": "~0.1.16",
     "passport-google-oauth": "~0.1.5",
-    "datejs": "0.0.2"
+    "datejs": "0.0.2",
+    "should": "~1.2.2"
   }
 }

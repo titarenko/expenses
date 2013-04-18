@@ -28,7 +28,7 @@ html
 		script#options-template(type="text/template")
 			h1 select option
 			#options
-			mixin button("skip")
+			mixin button("new")
 
 		script#expense-editor-template(type="text/template")
 			h1 edit expense
@@ -36,6 +36,7 @@ html
 			mixin field("where")
 			mixin field("price", "price", "number")
 			mixin button("save")
+			a.button(href="#") cancel
 
 		script#login-template(type="text/template")
 			a.button(href="#signUp")
@@ -58,19 +59,18 @@ html
 			table
 				thead
 					tr
-						th Date
 						th Item
-						th Place
 						th Price
+						th Place
+						th Date
 				tbody
 			a.button(href="#") back
 
 		script#expense-template(type="text/template")
-			tr
-				td {{=it.date}}
-				td {{=it.item}}
-				td {{=it.place}}
-				td {{=it.price}}
+			td {{=it.item}}
+			td.number {{=it.price.toFixed(2)}}
+			td.muted {{=it.place}}
+			td.muted {{=moment(it.date).calendar()}}
 
 		script#no-expense-template(type="text/template")
 			tr
