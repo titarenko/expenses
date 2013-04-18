@@ -134,7 +134,6 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 					formatter: ->
 						name = @point.name.charAt(0).toUpperCase() + @point.name.slice(1)
 						"<b>" + name + "</b>: " + @percentage.toFixed(2) + " %"
-					#pointFormat: "{series.name}: <b>{point.percentage}%</b>"
 					percentageDecimals: 2
 				plotOptions:
 						pie:
