@@ -68,17 +68,19 @@ define ["bus", "views", "models"], (bus, views, models) ->
 
 	exports.AuthController = 
 		showLogin: ->
-			view = new views.Login
-				model: new models.Login
+			bus.trigger "show", new views.Login
 
-			bus.trigger "show", view
+	exports.HistoryController = 
+		showHistory:->
+			layout = new views.StatisticsLayout
+			bus.trigger "show", layout
 
-			view.on "signUp", ->
-				@showSignUpPage()
+			lastExpenses = new models.LastExpenses
 
-		showSignUp:->
-			view = new views.SignUp
-				model: new models.Login
-			bus.trigger "show", view
+			layout.history.show new views.History collection: lastExpenses
+
+			layout.chart.show new views.Chart collection: lastExpenses
+
+			lastExpenses.fetch()
 
 	exports

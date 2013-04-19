@@ -21,6 +21,7 @@ html
 			a.button(href="#add") add expense
 			a.button(href="#history/week") show this week
 			a.button(href="#history/month") show this month
+			a.button(href="#history") show histiry with chart
 
 		script#option-template(type="text/template")
 			button.option {{=it.name}}
@@ -39,20 +40,25 @@ html
 			a.button(href="#") cancel
 
 		script#login-template(type="text/template")
-			a.button(href="#signUp")
-				| New in system? Sign Up!
-			h1 Login to system
-			form(action="/login", method="post")
-				mixin field("Email", "email")
-				mixin field("Password", "password", "password")
-				input.button(type="submit", value="Log In")
 			a.button(href="/auth/google") Login via Google
 
-		script#sign-up-template(type="text/template")
-			h1 Register in system
-			mixin field("Email","email")
-			mixin field("Password", "password", "password")
-			a.button(href="submit") Sign Up
+		script#statistics-template(type="text/template")
+			#chart
+			#history
+
+		script#history-item-template(type="text/template")
+			.history-entity
+				.history-left-side
+					.history-item {{=it.item}}
+					.history-place {{=it.place}}
+				.history-right-side
+					.history-price {{=it.price}}
+
+		script#history-template(type="text/template")
+			h1 History
+
+		script#empty-template(type="text/template")
+			p Loading, please wait....
 
 		script#expenses-template(type="text/template")
 			h1 history

@@ -9,6 +9,9 @@ require.config
 		spinner: "spin_v1.2.8.min"
 		d3: "d3_v3.0.8.min"
 		validate: "jquery.validate_v1.11.0.min"
+		highcharts: "highcharts_v3.0.1.min"
+		highcharts_exporting: "highcharts_exporting_v3.0.1.min"
+		linqjs: "linq_v3.0.3-Beta4.min"
 
 	shim:
 		jquery: exports: "$"
@@ -22,6 +25,9 @@ require.config
 		moment: exports: "moment"
 		dot: exports: "doT"
 		d3: exports: "d3"
+		highcharts_exporting:
+			deps:["highcharts"]
+		linqjs: exports: "linqjs"
 
 require ["marionette", "dot", "routers", "bus"], (Marionette, doT, routers, bus) ->
 
@@ -37,6 +43,7 @@ require ["marionette", "dot", "routers", "bus"], (Marionette, doT, routers, bus)
 		router = new routers.MainMenuRouter()
 		new routers.ExpenseWizardRouter()
 		new routers.AuthRouter()
+		new routers.StatisticsRouter()
 
 		bus.on "show", (view) ->
 			app.viewport.show view

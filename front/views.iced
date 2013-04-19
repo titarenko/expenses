@@ -1,4 +1,7 @@
-define ["marionette"], (Marionette) ->
+define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"], (Marionette, HighchartsExporting, highcharts, $, Enumerable) ->
+
+	Empty = Marionette.ItemView.extend
+		template: "#empty-template"
 
 	exports = {}
 
@@ -53,38 +56,69 @@ define ["marionette"], (Marionette) ->
 	exports.Login = Marionette.ItemView.extend
 		template: "#login-template"
 
-		ui:
-			email: "#email"
-			password: "#password"
+	exports.HistoryItem = HistoryItem = Marionette.ItemView.extend
+		template: "#history-item-template"
 
-		events:
-			"click #signUp": "signUp"
-			"click #submit": "loginAct"
+	exports.History = Marionette.CompositeView.extend
+		template: "#history-template"
+		itemView: HistoryItem
+		emptyView: Empty
 
-		loginAct: ->
-			@model.set
-				email: @ui.email.val()
-				password : @ui.password.val()
+	exports.StatisticsLayout = Marionette.Layout.extend
+		template: "#statistics-template"
+		regions:
+			history: "#history"
+			chart: "#chart"
 
-		signUp: ->
-			console.log "catched"
-			@trigger "signUp"
+	exports.Chart = Marionette.View.extend
+		
+		initialize:  ->
+			@listenTo @collection, "sync", @plot
 
-	exports.SignUp = Marionette.ItemView.extend
-		template: "#sign-up-template"
+		plot:->
 
-		ui:
-			email: "#email"
-			password: "#password"
+			list = Enumerable.from(@collection.toJSON())
 
-		events: 
-			"click #submit" : "register"
+			totalSum = list.sum((x) -> x.price)
 
-		register:->
-			model.set
-				email: @ui.email.val()
-				password: @ui.password.lav()
-			@trigger "register"
+			dataItems = list
+			.groupBy((x) -> x.item)
+			.select((x)->
+				source = Enumerable.from(x)
+				percentage = (source.sum("$.price") * 100/ totalSum).toFixed 2
+				new Array(source.first().item, parseFloat(percentage))
+				)
+			.toArray()
+
+			options = 
+				chart:
+					plotBackgroundColor: null
+					plotBorderWidth: null
+					plotShadow: false
+				title:
+					text: "Your expences persentage"
+				tooltip:
+					formatter: ->
+						name = @point.name.charAt(0).toUpperCase() + @point.name.slice(1)
+						"<b>" + name + "</b>: " + @percentage.toFixed(2) + " %"
+					percentageDecimals: 2
+				plotOptions:
+						pie:
+							allowPointSelect: true
+							cursor: "pointer"
+							dataLabels:
+								enabled: true
+								color: "#000000"
+								connectorColor: "#000000"
+								formatter: ->
+									name = @point.name.charAt(0).toUpperCase() + @point.name.slice(1)
+									"<b>" + name + "</b>: " + @percentage.toFixed(2) + " %"
+				series: [{
+					type: 'pie',
+					data: dataItems
+					}]
+
+			@$el.highcharts options
 
 	NoExpense = Marionette.ItemView.extend
 		tagName: "tr"
@@ -102,7 +136,7 @@ define ["marionette"], (Marionette) ->
 		ui:
 			total: "#total"
 		initialize: ->
-			@listenTo @collection, "sync", @updateTotalPrice	
+			@listenTo @collection, "sync", @updateTotalPrice
 		updateTotalPrice: ->
 			@ui.total.text @collection.getTotalPrice().toFixed 2
 
