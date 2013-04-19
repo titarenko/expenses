@@ -68,18 +68,7 @@ define ["bus", "views", "models"], (bus, views, models) ->
 
 	exports.AuthController = 
 		showLogin: ->
-			view = new views.Login
-				model: new models.Login
-
-			bus.trigger "show", view
-
-			view.on "signUp", ->
-				@showSignUpPage()
-
-		showSignUp:->
-			view = new views.SignUp
-				model: new models.Login
-			bus.trigger "show", view
+			bus.trigger "show", new views.Login
 
 	exports.HistoryController = 
 		showHistory:->

@@ -56,39 +56,6 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 	exports.Login = Marionette.ItemView.extend
 		template: "#login-template"
 
-		ui:
-			email: "#email"
-			password: "#password"
-
-		events:
-			"click #signUp": "signUp"
-			"click #submit": "loginAct"
-
-		loginAct: ->
-			@model.set
-				email: @ui.email.val()
-				password : @ui.password.val()
-
-		signUp: ->
-			@trigger "signUp"
-
-	exports.SignUp = Marionette.ItemView.extend
-		template: "#sign-up-template"
-
-		ui:
-			email: "#email"
-			password: "#password"
-
-		events: 
-			"click #submit" : "register"
-
-		register:->
-			model.set
-				email: @ui.email.val()
-				password: @ui.password.lav()
-			@trigger "register"
-			#TODO: add logic into controller
-
 	exports.HistoryItem = HistoryItem = Marionette.ItemView.extend
 		template: "#history-item-template"
 
@@ -118,7 +85,7 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 			.groupBy((x) -> x.item)
 			.select((x)->
 				source = Enumerable.from(x)
-				percentage = (source.sum("$.price") * 100/ totalSum).toFixed(2)
+				percentage = (source.sum("$.price") * 100/ totalSum).toFixed 2
 				new Array(source.first().item, parseFloat(percentage))
 				)
 			.toArray()
