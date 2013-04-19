@@ -8,6 +8,9 @@ mongoose = require "mongoose"
 models = require "./models/models"
 passport = require 'passport'
 auth = require "./auth"
+http = require 'http'
+socket = require 'socket.io'
+bus = require './bus'
 
 connectionString = process.env.CONNECTION_STRING or "mongodb://localhost/expenses"
 port = process.env.PORT or 3000
@@ -17,6 +20,8 @@ mongoose.connect connectionString, (error) ->
 	log.info "Connected to #{connectionString}." unless error
 
 app = express()
+server = http.createServer app
+io = socket.listen server
 
 frontDir = __dirname + "/../front"
 
@@ -45,5 +50,8 @@ app.resource "items", resources.items
 app.resource "places", resources.places
 app.resource "prices", resources.prices
 
-app.listen port, -> 
+bus.on "add:expense", (expense) ->
+	io.sockets.emit "add:expense", expense
+
+server.listen port, -> 
 	log.info "Listening on #{port}..."

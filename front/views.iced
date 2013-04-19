@@ -63,6 +63,10 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 		template: "#history-template"
 		itemView: HistoryItem
 		emptyView: Empty
+		itemViewContainer: ".container"
+		appendHtml: (compositeView, itemView) ->
+			@container = @container or @getItemViewContainer compositeView 
+			@container.prepend itemView.el
 
 	exports.StatisticsLayout = Marionette.Layout.extend
 		template: "#statistics-template"
@@ -73,7 +77,7 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 	exports.Chart = Marionette.View.extend
 		
 		initialize:  ->
-			@listenTo @collection, "sync", @plot
+			@listenTo @collection, "sync add", @plot
 
 		plot:->
 

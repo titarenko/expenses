@@ -1,5 +1,6 @@
 mongoose = require "mongoose"
 require 'datejs'
+bus = require '../bus'
 
 Expense = mongoose.Schema
 	item: 
@@ -18,10 +19,10 @@ Expense = mongoose.Schema
 		min: 0.01
 
 Expense.statics.getAll = (done) ->
-	@find().sort("-date").exec done
+	@find().sort("date").exec done
 
 Expense.statics.getLast =(done) ->
-	@find().sort("-date").limit(20).exec done
+	@find().sort("date").limit(20).exec done
 
 Expense.statics.getBetween = (begin, end, done) ->
 	@find(date: $gte: begin, $lt: end).sort("-date").exec done
@@ -40,5 +41,8 @@ Expense.pre "save", (next) ->
 	@item = @item.toLowerCase()
 	@place = @place.toLowerCase()
 	next()
+
+Expense.post "save", (next) ->
+	bus.emit "add:expense", @
 
 module.exports = mongoose.model "expenses", Expense

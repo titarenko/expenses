@@ -1,8 +1,8 @@
-define ["backbone"], (Backbone) ->
+define ["backbone", "superb"], (Backbone, superb) ->
 
 	exports = {}
 
-	exports.Expense = Backbone.Model.extend
+	exports.Expense = Expense = Backbone.Model.extend
 		urlRoot: "expenses"
 
 	exports.FrequentItems = Backbone.Collection.extend
@@ -21,6 +21,10 @@ define ["backbone"], (Backbone) ->
 
 	exports.Expenses = Backbone.Collection.extend
 		url: "expenses"
+		initialize: ->
+			superb.on "add:expense", (data) =>
+				model = new Expense data
+				@add model, at: 0
 		getTotalPrice: ->
 			reduction = (memo, item) ->
 				memo + item.get "price"
