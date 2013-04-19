@@ -9,7 +9,6 @@ models = require "./models/models"
 passport = require 'passport'
 auth = require "./auth"
 
-
 connectionString = process.env.CONNECTION_STRING or "mongodb://localhost/expenses"
 port = process.env.PORT or 3000
 
@@ -33,18 +32,18 @@ app.use passport.session()
 app.use lessCompiler frontDir
 app.use icedCompiler frontDir
 
+app.use auth
+
 app.set "view engine", "jade"
 app.set "views", frontDir
+
+app.get "/", (req, res) ->
+	res.render "app"
 
 app.resource "expenses", resources.expenses
 app.resource "items", resources.items
 app.resource "places", resources.places
 app.resource "prices", resources.prices
-
-app.get "/", (req, res) ->
-	res.render "app"
-
-#app.use auth
 
 app.listen port, -> 
 	log.info "Listening on #{port}..."

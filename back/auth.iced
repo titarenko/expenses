@@ -52,3 +52,6 @@ module.exports = (req, res, next) ->
       oauth2callback req, res
     when "/auth/google"
       authGoogle req, res
+    else
+      next()
+      
