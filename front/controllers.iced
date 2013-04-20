@@ -75,7 +75,7 @@ define ["bus", "views", "models"], (bus, views, models) ->
 			layout = new views.StatisticsLayout
 			bus.trigger "show", layout
 
-			lastExpenses = new models.LastExpenses
+			lastExpenses = new models.Expenses
 
 			layout.history.show new views.History collection: lastExpenses
 
