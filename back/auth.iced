@@ -1,7 +1,7 @@
 passport = require 'passport'
 models = require "./models/models"
 GoogleStrategy = require("passport-google-oauth").OAuth2Strategy
-#LocalStrategy = require('passport-local').Strategy
+Backdoor = require './backdoor'
 
 GoogleAuthStrategy = new GoogleStrategy
   clientID: "836427388747.apps.googleusercontent.com",
@@ -9,11 +9,12 @@ GoogleAuthStrategy = new GoogleStrategy
   callbackURL: "http://localhost:3000/oauth2callback",
   (accessToken, refreshToken, profile, done) ->
     models.User.getOrCreateByGoogleId
-      googleId : profile._json.id, 
+      googleId: profile._json.id, 
       email: profile._json.email
       , (err, user) ->
         done err, user
 
+passport.use Backdoor
 passport.use GoogleAuthStrategy
 
 passport.serializeUser (user, done) ->
@@ -23,7 +24,7 @@ passport.deserializeUser (obj, done) ->
   models.User.getById obj, (err, user) ->
     done null, user
 
-authGoogle =(req, res) ->
+authGoogle = (req, res) ->
   passport.authenticate('google', 
     { successRedirect: '/', 
     failureRedirect: '/login' , 
@@ -43,6 +44,8 @@ login = (req, res) ->
   res.json user: req.user
 
 module.exports = (req, res, next) ->
+  passport.initialize().apply @, arguments
+  passport.session().apply @, arguments 
   switch req.url
     when "/logout"
       logout req, res
@@ -54,4 +57,3 @@ module.exports = (req, res, next) ->
       authGoogle req, res
     else
       next()
-      

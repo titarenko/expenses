@@ -6,7 +6,6 @@ require "express-resource"
 resources = require "./resources"
 mongoose = require "mongoose"
 models = require "./models/models"
-passport = require 'passport'
 auth = require "./auth"
 http = require 'http'
 socket = require 'socket.io'
@@ -31,19 +30,22 @@ app.use express.cookieParser()
 app.use express.session
   secret: "expenses-app"
 
-app.use passport.initialize()
-app.use passport.session()
-
 app.use lessCompiler frontDir
 app.use icedCompiler frontDir
 
-app.use auth
+# app.use auth
 
 app.set "view engine", "jade"
 app.set "views", frontDir
 
 app.get "/", (req, res) ->
 	res.render "app"
+
+guard = (req, res, next) ->
+	return res.send 403 if not req.isAuthenticated()
+	next()
+
+# app.all "/expenses", guard
 
 app.resource "expenses", resources.expenses
 app.resource "items", resources.items
