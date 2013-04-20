@@ -43,19 +43,21 @@ html
 			a.button(href="/auth/google") Login via Google
 
 		script#statistics-template(type="text/template")
+			h1 history
 			#chart
 			#history
+			div
+				a.button(href="#") back
 
 		script#history-item-template(type="text/template")
 			.history-entity
 				.history-left-side
 					.history-item {{=it.item}}
-					.history-place {{=it.place}}
+					.history-place.muted {{=it.place}}
 				.history-right-side
-					.history-price {{=it.price}}
+					.history-price {{=it.price.toFixed(2)}}
 
 		script#history-template(type="text/template")
-			h1 History
 			.container
 
 		script#empty-template(type="text/template")

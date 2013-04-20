@@ -31,7 +31,7 @@ require.config
 		linqjs: exports: "linqjs"
 		io: exports: "io"
 
-require ["marionette", "dot", "routers", "bus"], (Marionette, doT, routers, bus) ->
+require ["marionette", "dot", "routers", "bus", "jquery"], (Marionette, doT, routers, bus, $) ->
 
 	Marionette.TemplateCache::compileTemplate = (rawTemplate) ->
 		doT.template rawTemplate
@@ -56,3 +56,10 @@ require ["marionette", "dot", "routers", "bus"], (Marionette, doT, routers, bus)
 		Backbone.history.start()
 
 	app.start()
+
+	$.ajaxSetup
+		success: ->
+			alert "success"
+		error: -> 
+			alert "error!"
+			console.log arguments[0]

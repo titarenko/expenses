@@ -58,14 +58,22 @@ button, .button {
 	list-style: none;
 }
 
+.container {
+	max-height: 400px;
+	overflow-y: scroll;
+}
+
 #chart{
-	float: left;
+	// float: left;
 	width: 60%;
+	display: inline-block;
+	vertical-align: top;
 }
 #history{
-	float: right;
-	width: 30%;
-	margin-right: 15px;
+	// float: right;
+	width: 40%;
+	// margin-right: 15px;
+	display: inline-block;
 }
 
 .history-left-side, .history-right-side{
@@ -77,11 +85,15 @@ button, .button {
 	width: 80%;
 }
 
-.history-entity{
+.history-entity {
 	clear: both;
 	overflow: auto;
-	border-bottom: 1px gray solid;
+	border-bottom: 1px gray dashed;
 }
+
+// .history-entity:last-child {
+// 	border: none;
+// }
 
 .history-place{
 	font-style: italic
