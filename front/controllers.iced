@@ -17,7 +17,7 @@ define ["bus", "views", "models"], (bus, views, models) ->
 			items.on "selected", (model) -> 
 				bus.trigger "navigate", "add-expense-places", item: model.get "name"
 			items.on "skipped", ->
-				bus.trigger "navigate", "add-expense-places"
+				bus.trigger "navigate", "add-expense-editor"
 
 			bus.trigger "show", new views.Options collection: items
 			
