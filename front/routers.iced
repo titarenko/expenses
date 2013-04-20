@@ -1,32 +1,22 @@
-define ["marionette", "controllers"], (Marionette, controllers) ->
+define ["routing", "controllers"], (routing, controllers) ->
 
-	exports = {}
+	RouteCollection = routing.RouteCollection
 
-	exports.MainMenuRouter = Marionette.AppRouter.extend
-		appRoutes:
-			"": "showMenu"
-			"history/:range": "showHistory"
-		controller: 
-			controllers.MainMenuController
-
-	exports.ExpenseWizardRouter = Marionette.AppRouter.extend
-		appRoutes:
-			"add": "showFrequentItems"
-			"add/:item": "showFrequentPlaces"
-			"add/:item/:place": "showExpenseEditor"
-		controller: 
-			controllers.ExpenseWizardController
-
-	exports.AuthRouter = Marionette.AppRouter.extend
-		appRoutes:
-			"login": "showLogin"
-		controller:
-			controllers.AuthController
-
-	exports.StatisticsRouter = Marionette.AppRouter.extend
-		appRoutes:
-			"history": "showHistory"
-		controller:
-			controllers.HistoryController
-
-	exports
+	new routing.RouteTable [
+		new RouteCollection
+			appRoutes:
+				"main-menu": url: "", action: "showMenu"
+				"history": url: "history/:range", action: "showHistory", range: "week"
+			controller: controllers.MainMenuController
+		new RouteCollection
+			appRoutes:
+				"add-expense-items": url: "add", action: "showFrequentItems"
+				"add-expense-places": url: "add/:item", action: "showFrequentPlaces", item: null
+				"add-expense-editor": url: "add/:item/:place", action: "showExpenseEditor", item: null, place: null
+			controller: controllers.ExpenseWizardController
+		new RouteCollection
+			appRoutes:
+				"analytics": url: "history", action: "showHistory"
+			controller:
+				controllers.HistoryController
+	]

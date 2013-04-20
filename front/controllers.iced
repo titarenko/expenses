@@ -15,9 +15,9 @@ define ["bus", "views", "models"], (bus, views, models) ->
 			items = new models.FrequentItems
 
 			items.on "selected", (model) -> 
-				bus.trigger "navigate", "add/#{model.get "name"}"
+				bus.trigger "navigate", "add-expense-places", item: model.get "name"
 			items.on "skipped", ->
-				bus.trigger "navigate", "add/?/?"
+				bus.trigger "navigate", "add-expense-places"
 
 			bus.trigger "show", new views.Options collection: items
 			
@@ -27,9 +27,9 @@ define ["bus", "views", "models"], (bus, views, models) ->
 			places = new models.FrequentPlaces
 			
 			places.on "selected", (model) -> 
-				bus.trigger "navigate", "add/#{item}/#{model.get "name"}"
+				bus.trigger "navigate", "add-expense-editor", item: item, place: model.get "name"
 			places.on "skipped", ->
-				bus.trigger "navigate", "add/#{item}/?"
+				bus.trigger "navigate", "add-expense-editor", item: item
 
 			bus.trigger "show", new views.Options collection: places
 
@@ -39,9 +39,6 @@ define ["bus", "views", "models"], (bus, views, models) ->
 						item: item
 
 		showExpenseEditor: (item, place) ->
-			item = null if item == "?"
-			place = null if place == "?"
-
 			price = new models.LatestPrice
 			
 			model = new models.Expense
@@ -53,7 +50,7 @@ define ["bus", "views", "models"], (bus, views, models) ->
 
 			view.on "done", ->
 				model.save()
-				bus.trigger "navigate", ""
+				bus.trigger "navigate", "main-menu"
 		
 			bus.trigger "show", view
 

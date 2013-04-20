@@ -42,24 +42,10 @@ require ["marionette", "dot", "routers", "bus", "jquery"], (Marionette, doT, rou
 		viewport: "#viewport"
 
 	app.addInitializer ->
-		router = new routers.MainMenuRouter()
-		new routers.ExpenseWizardRouter()
-		new routers.AuthRouter()
-		new routers.StatisticsRouter()
-
 		bus.on "show", (view) ->
 			app.viewport.show view
-
-		bus.on "navigate", (route) ->
-			router.navigate route, trigger: true
-
-		Backbone.history.start()
+		bus.on "navigate", (route, parameters) ->
+			routers.navigate route, parameters
+		routers.start()
 
 	app.start()
-
-	$.ajaxSetup
-		success: ->
-			alert "success"
-		error: -> 
-			alert "error!"
-			console.log arguments[0]
