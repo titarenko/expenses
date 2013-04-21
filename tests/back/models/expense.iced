@@ -16,15 +16,12 @@ describe "Expense", ->
 		clock.restore()
 
 	before (done) ->
-		mongoose.connect "mongodb://localhost/expenses-test"
-		
 		saveExpense = (date, done) ->
 			(new Expense
 				item: "milk"
 				place: "amstor"
 				price: 10
-				date: date).save done
-		
+				date: date).save done		
 		async.series [
 			(done) -> Expense.removeAll done
 			(done) -> 
