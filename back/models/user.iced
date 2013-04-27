@@ -6,10 +6,8 @@ User = mongoose.Schema
 		required: true
 	passwordHash:
 		type: String
-		required: true
 	passwordSalt:
 		type: String
-		required: true
 	googleId:
 		type: String
 
@@ -27,5 +25,8 @@ User.statics.getOrCreateByGoogleId = (params, done) ->
 		googleId: params.googleId
 		email: params.email
 	@collection.findAndModify query, sort, update, options, done
+
+User.statics.removeAll = (done) ->
+	@collection.remove {}, {w: 0}, done
 
 module.exports = mongoose.model "users", User
