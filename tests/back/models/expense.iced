@@ -6,52 +6,20 @@ should = require 'should'
 
 describe "Expense", ->
 
-	clock = null
-	now = new Date 2012, 3, 20
-
-	before ->
-		clock = sinon.useFakeTimers now.getTime()
-
-	after ->
-		clock.restore()
-
 	before (done) ->
-		saveExpense = (date, done) ->
+		saveExpense = (month, day, done) ->
 			(new Expense
 				item: "milk"
 				place: "amstor"
 				price: 10
-				date: date).save done		
+				date: new Date 2012, month, day).save done
+		january = [1..19].map (x) -> saveExpense.bind @, 0, x
+		februaryToApril = [1..3].map (x) -> saveExpense.bind @, x, 1
+		april = [19..20].map (x) -> saveExpense.bind @, 3, x
 		async.series [
 			(done) -> Expense.removeAll done
-			(done) -> 
-				async.parallel [
-					saveExpense.bind @, new Date 2012, 0, 1
-					saveExpense.bind @, new Date 2012, 0, 2
-					saveExpense.bind @, new Date 2012, 0, 3
-					saveExpense.bind @, new Date 2012, 0, 4
-					saveExpense.bind @, new Date 2012, 0, 5
-					saveExpense.bind @, new Date 2012, 0, 6
-					saveExpense.bind @, new Date 2012, 0, 7
-					saveExpense.bind @, new Date 2012, 0, 8
-					saveExpense.bind @, new Date 2012, 0, 9
-					saveExpense.bind @, new Date 2012, 0, 10
-					saveExpense.bind @, new Date 2012, 0, 11
-					saveExpense.bind @, new Date 2012, 0, 12
-					saveExpense.bind @, new Date 2012, 0, 13
-					saveExpense.bind @, new Date 2012, 0, 14
-					saveExpense.bind @, new Date 2012, 0, 15
-					saveExpense.bind @, new Date 2012, 0, 16
-					saveExpense.bind @, new Date 2012, 0, 17
-					saveExpense.bind @, new Date 2012, 0, 18
-					saveExpense.bind @, new Date 2012, 0, 19
-					saveExpense.bind @, new Date 2012, 1, 1
-					saveExpense.bind @, new Date 2012, 2, 1
-					saveExpense.bind @, new Date 2012, 3, 1
-					saveExpense.bind @, new Date 2012, 3, 19
-					saveExpense.bind @, new Date 2012, 3, 20
-				], done
-			], done
+			(done) -> async.parallel january.concat(februaryToApril.concat(april)), done
+		], done
 
 	describe "#getThisWeek()", ->
 		
@@ -147,5 +115,5 @@ describe "Expense", ->
 				price: 0.10
 				item: "meat"
 			model.save (error) ->
-				model.date.should.eql now
+				model.date.should.eql new Date
 				done()
