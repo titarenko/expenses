@@ -10,6 +10,7 @@ auth = require "./auth"
 http = require 'http'
 socket = require 'socket.io'
 bus = require './bus'
+passport = require 'passport'
 
 connectionString = process.env.CONNECTION_STRING or "mongodb://localhost/expenses"
 port = process.env.PORT or 3000
@@ -24,7 +25,6 @@ io = socket.listen server
 
 frontDir = __dirname + "/../front"
 
-app.use express.static(frontDir + "/lib")
 app.use express.bodyParser()
 app.use express.cookieParser()
 app.use express.session
@@ -33,27 +33,33 @@ app.use express.session
 app.use lessCompiler frontDir
 app.use icedCompiler frontDir
 
-# app.use auth
+app.use passport.initialize()
+app.use passport.session()
+  
+app.use auth
+
+app.use express.static frontDir + "/lib"
 
 app.set "view engine", "jade"
-app.set "views", frontDir
+app.set "views", __dirname + "/views"
 
 app.get "/", (req, res) ->
-	res.render "app"
+	res.render "landing"
 
 guard = (req, res, next) ->
-	return res.send 403 if not req.isAuthenticated()
-	next()
+	if req.isAuthenticated()
+		next()
+	else
+		res.statusCode = 403
+		res.end()
 
 # app.all "/expenses", guard
+#app.use "/expenses", guard
 
-app.resource "expenses", resources.expenses
-app.resource "items", resources.items
-app.resource "places", resources.places
-app.resource "prices", resources.prices
-
-bus.on "add:expense", (expense) ->
-	io.sockets.emit "add:expense", expense
+# app.resource "expenses", resources.expenses
+# app.resource "items", resources.items
+# app.resource "places", resources.places
+# app.resource "prices", resources.prices
 
 server.listen port, -> 
 	log.info "Listening on #{port}..."
