@@ -13,9 +13,11 @@ describe "Expense", ->
 				place: "amstor"
 				price: 10
 				date: new Date 2012, month, day).save done
+		
 		january = [1..19].map (x) -> saveExpense.bind @, 0, x
 		februaryToApril = [1..3].map (x) -> saveExpense.bind @, x, 1
 		april = [19..20].map (x) -> saveExpense.bind @, 3, x
+		
 		async.series [
 			(done) -> Expense.removeAll done
 			(done) -> async.parallel january.concat(februaryToApril.concat(april)), done
