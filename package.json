@@ -4,7 +4,7 @@
   "description": "Expenses tracking and analysis system",
   "main": "back/server.iced",
   "scripts": {
-    "start": "iced back/server.iced",
+    "start": "nodemon --exec iced back/server.iced",
     "test": "mocha --compilers iced:iced-coffee-script --recursive tests -R spec -r should"
   },
   "repository": "https://github.com/titarenko/expenses",

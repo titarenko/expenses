@@ -1,5 +1,8 @@
 async = require "async"
-models = require "./models/models"
+Expense = require './models/expense'
+Item = require './models/item'
+Place = require './models/place'
+Price = require "./models/price"
 log = require "./log"
 
 respond = (params) ->
@@ -16,23 +19,23 @@ module.exports =
 	expenses:
 		index: (req, res) ->
 			method = (week: "getThisWeek", month: "getThisMonth")[req.query.range] or "getAll"
-			models.Expense[method] respond arguments
+			Expense[method] respond arguments
 		create: (req, res) ->
 			async.series [
-				(done) -> (new models.Expense req.body).save done
+				(done) -> (new Expense req.body).save done
 				(done) -> async.parallel [
-					(done) -> models.Item.hit req.body.item, done
-					(done) -> models.Place.hit req.body.item, req.body.place, done
-					(done) -> models.Price.hit req.body.item, req.body.place, req.body.price, done
+					(done) -> Item.hit req.body.item, done
+					(done) -> Place.hit req.body.item, req.body.place, done
+					(done) -> Price.hit req.body.item, req.body.place, req.body.price, done
 				], done
 			], (error) -> respond([req, res]) error, {}
 	items:
 		index: (req, res) ->
-			models.Item.getFrequent respond arguments
+			Item.getFrequent respond arguments
 	places:
 		index: (req, res) ->
-			models.Place.getFrequent req.query.item, respond arguments
+			Place.getFrequent req.query.item, respond arguments
 	prices:
 		index: (req, res) ->
-			models.Price.getLatest req.query.item, req.query.place, (error, price) ->
+			Price.getLatest req.query.item, req.query.place, (error, price) ->
 				respond([req, res]) error, price

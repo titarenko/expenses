@@ -4,6 +4,8 @@ lessCompiler = require "./lessCompiler"
 icedCompiler = require "./icedCompiler"
 resources = require "./resources"
 mongoose = require "mongoose"
+require "express-resource"
+auth = require './auth'
 
 connectionString = process.env.CONNECTION_STRING or "mongodb://localhost/expenses"
 port = process.env.PORT or 3000
@@ -29,8 +31,13 @@ app.use express.static frontDir + "/lib"
 app.set "view engine", "jade"
 app.set "views", __dirname + "/views"
 
+auth app
+
 app.get "/", (req, res) ->
 	res.render "landing"
+
+app.get "/app", (req, res) ->
+	res.render "app"
 
 guard = (req, res, next) ->
 	if req.isAuthenticated()
@@ -39,16 +46,13 @@ guard = (req, res, next) ->
 		res.statusCode = 403
 		res.end()
 
-require("./auth") app
-require "express-resource"
-
 # app.all "/expenses", guard
-#app.use "/expenses", guard
+# app.use "/expenses", guard
 
-# app.resource "expenses", resources.expenses
-# app.resource "items", resources.items
-# app.resource "places", resources.places
-# app.resource "prices", resources.prices
+app.resource "expenses", resources.expenses
+app.resource "items", resources.items
+app.resource "places", resources.places
+app.resource "prices", resources.prices
 
 app.listen port, -> 
 	log.info "Listening on #{port}..."

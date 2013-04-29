@@ -12,7 +12,6 @@ require.config
 		highcharts: "highcharts_v3.0.1.min"
 		highcharts_exporting: "highcharts_exporting_v3.0.1.min"
 		linqjs: "linq_v3.0.3-Beta4.min"
-		io: "socket.io/socket.io"
 
 	shim:
 		jquery: exports: "$"
@@ -29,7 +28,6 @@ require.config
 		highcharts_exporting:
 			deps:["highcharts"]
 		linqjs: exports: "linqjs"
-		io: exports: "io"
 
 require ["marionette", "dot", "routers", "bus", "jquery"], (Marionette, doT, routers, bus, $) ->
 
