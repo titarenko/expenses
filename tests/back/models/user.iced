@@ -24,18 +24,13 @@ describe "User", ->
 				], done
 			], done
 
-<<<<<<< HEAD
 	describe "#getByEmail()", ->
 
-=======
-	describe "#getByNameOrEmail()", ->
-		
->>>>>>> titarenko-expenses/master
 		it "should return user by their email", (done) ->
 			User.getByNameOrEmail "bob@gmail.com", (error, user) ->
 				user.email.should.eql "bob@gmail.com"
 				done()
-<<<<<<< HEAD
+
 	describe "#getOrCreateByGoogleId()", ->
 
 		it "should create user with GoggleId if it's not present", (done) ->
@@ -48,7 +43,6 @@ describe "User", ->
 				user.email.should.eql "greatnewemail@gmail.com"
 				user.googleId.should.eql "3l5jhkg235hjt545"
 				done()
-=======
 
 		it "should return user by their name", (done) ->
 			User.getByNameOrEmail "bob", (error, user) ->
@@ -76,4 +70,3 @@ describe "User", ->
 			model = new User
 			model.setPasswordSync "123", "123"
 			model.verifyPasswordSync("123").should.eql true
->>>>>>> titarenko-expenses/master

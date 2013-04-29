@@ -24,13 +24,6 @@ User.statics.removeAll = (done) ->
 User.statics.getByNameOrEmail = (email, done) ->
 	@findOne($or: [{name: email}, {email: email}]).exec done
 
-User.statics.getByUsernameOrEmail = (login, done) ->
-	query = $or: [
-		{username : login}
-		{email: login}
-	]
-	@findOne(query).exec done
-
 User.statics.getById = (userId, done) ->
 	@findOne(_id: userId).exec done
 
