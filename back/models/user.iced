@@ -1,20 +1,28 @@
 mongoose = require 'mongoose'
-bcrypt = require 'bcrypt'
+bcrypt = require 'bcrypt-nodejs'
 
 User = mongoose.Schema
-	username:
+	name:
 		type: String
+		required: true
+		index: unique: true
 	email:
 		type: String
-	passwordHash:
-		type: String
-	passwordSalt:
+	encodedPassword:
 		type: String
 	googleId:
 		type: String
+		index: true
+	registrationDate:
+		type: Date
+		default: -> Date.now()
+		required: true
 
-User.statics.getByEmail = (email, done) ->
-	@findOne(email: email).exec done
+User.statics.removeAll = (done) ->
+	@collection.remove {}, {w: 0}, done
+
+User.statics.getByNameOrEmail = (email, done) ->
+	@findOne($or: [{name: email}, {email: email}]).exec done
 
 User.statics.getByUsernameOrEmail = (login, done) ->
 	query = $or: [
@@ -33,26 +41,21 @@ User.statics.getOrCreateByGoogleId = (params, done) ->
 	update = $set: 
 		googleId: params.googleId
 		email: params.email
+		name: params.name or params.email
 	@collection.findAndModify query, sort, update, options, done
 
-User.statics.removeAll = (done) ->
-	@collection.remove {}, {w: 0}, done
+User.methods.setPasswordSync = (password, confirmation) ->
+	if password == confirmation
+		@encodedPassword = bcrypt.hashSync password, bcrypt.genSaltSync()
+	else
+		throw new Error "Confirmation doesn't match the password."
 
-User.statics.createCredentials = (password, done) ->
-	bcrypt.genSalt 15, 25, (err, salt) ->
-		bcrypt.hash password, salt, (err, hash)->
-			credentials = {
-					Salt: salt,
-					Hash: hash
-				}
-			done null, credentials
+User.methods.verifyPasswordSync = (password) ->
+	bcrypt.compareSync password, @encodedPassword
 
-User.statics.comparePassword = (user, password, done) ->
-	bcrypt.compare password, user.passwordHash, (err, res) ->
-		if err?
-			return done "password is not matched", false 
-		done null, true
-
+User.pre "validate", (next) ->
+	@name = @email unless @name
+	next()
 
 User.pre "save", (next) ->
 	@username = @username?.toLowerCase()
