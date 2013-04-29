@@ -12,6 +12,7 @@ User = mongoose.Schema
 		type: String
 	googleId:
 		type: String
+		index: true
 	registrationDate:
 		type: Date
 		default: -> Date.now()

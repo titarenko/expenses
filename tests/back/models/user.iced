@@ -24,7 +24,7 @@ describe "User", ->
 				], done
 			], done
 
-	describe "#getByEmail()", ->
+	describe "#getByNameOrEmail()", ->
 
 		it "should return user by their email", (done) ->
 			User.getByNameOrEmail "bob@gmail.com", (error, user) ->
@@ -35,6 +35,29 @@ describe "User", ->
 			User.getByNameOrEmail "bob", (error, user) ->
 				user.name.should.eql "bob"
 				done()
+
+	describe "#getOrCreateByGoogleId()", ->
+
+		it "should create user with GoggleId if it's not present", (done) ->
+			params = 
+				googleId: "3l5jhkg235hjt545",
+				email: "greatnewemail@gmail.com"
+			User.getOrCreateByGoogleId params, (error, user) ->
+				throw error if error?
+			User.getByNameOrEmail "greatnewemail@gmail.com", (error, user) ->
+				user.email.should.eql "greatnewemail@gmail.com"
+				user.googleId.should.eql "3l5jhkg235hjt545"
+				done()
+
+		it "should get user with GoggleId if it's already present", (done) ->
+			params = 
+				googleId: "3l5jhkg235hjt545dfdkjhf",
+				email: "greatnewemail12345@gmail.com"
+			(new User params).save (error, user) ->
+				User.getOrCreateByGoogleId params, (error, user) ->
+					user.email.should.eql "greatnewemail12345@gmail.com"
+					user.googleId.should.eql "3l5jhkg235hjt545dfdkjhf"
+					done()
 
 	describe "#ctor()", ->
 
