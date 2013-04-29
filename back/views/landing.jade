@@ -6,23 +6,5 @@ html
 		script(type="text/javascript", src="jquery_v1.9.0.min.js")
 	body
 		h1 Expenses
-		form(action="/enter", method="post")
-			#login
-				input(type="text", id="name", name="name", placeholder="Name")
-				input(type="password", id="password", name="password", placeholder="Password")
-				input(type="submit", value="Log in")
-				button#register Register
-			#registration(style="display: none;")
-				input(type="text", id="name", name="name", placeholder="Name")
-				input(type="text", id="email", name="email", placeholder="Email")
-				input(type="password", id="password", name="password", placeholder="Password")
-				input(type="password", id="confirmation", name="confirmation", placeholder="Password confirmation")
-				input(type="submit", value="Register")
-		script(type="text/javascript")
-			$(function () {
-				$("#register").click(function (e) {
-					$("#login").hide();
-					$("#registration").show();
-					e.preventDefault();
-				});
-			});
+		p Welcome! Please enter the system using your Google account. We will not track your personal info, definitely!
+		a.button(href="/enter/google") Log In With Google Account

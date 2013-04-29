@@ -1,34 +1,40 @@
 passport = require 'passport'
-User = require './models/User'
-express = require 'express'
-LocalStrategy = require('passport-local').Strategy
+User = require './models/user'
+GoogleStrategy = require("passport-google-oauth").OAuth2Strategy
 util = require 'util'
 
-passport.use new LocalStrategy {usernameField: "name"}, (name, password, done) ->
-    await User.findByNameOrEmail name, defer error, user
-    return done error if error
-    return done null, false unless user
-    return done null, user if user.isPasswordCorrect password
-    done null, false
+module.exports = (app) ->
+    app.use passport.initialize()
+    app.use passport.session()
 
-app = express.application
+    GoogleAuthStrategy = new GoogleStrategy
+      clientID: "836427388747.apps.googleusercontent.com",
+      clientSecret: "lMF07R7txxWa_scy0S1D_y6Y",
+      callbackURL: "http://localhost:3000/accept/google/",
+      (accessToken, refreshToken, profile, done) ->
+        models.User.getOrCreateByGoogleId
+          googleId: profile._json.id, 
+          email: profile._json.email
+          , (err, user) ->
+            done err, user
 
-localAuthentication = passport.authenticate "local",
-    successRedirect: "/app"
-    failureRedirect: "/"
+    passport.use GoogleStrategy
 
-app.post "/register", (req, res) ->
-    User.create
-        name: req.params.name
-        password: req.params.password
-        email: req.params.email
-        , (error, user) ->
-            if error
-                model = util._extend req.params, isRegistration: true
-                res.render "landing", model
-            else
-                localAuthentication req, res
+    passport.serializeUser (user, done) ->
+        done null, user._id
 
-app.post "/login", passport.authenticate "local",
-    successRedirect: "/app"
-    failureRedirect: "/"
+    passport.deserializeUser (obj, done) ->
+        models.User.getById obj, (err, user) ->
+            done null, user
+
+    googleAuthentication = passport.authenticate "google",
+            successRedirect: '/app',
+            failureRedirect: '/' ,
+            scope: ['https://www.googleapis.com/auth/userinfo.email']
+
+    app.get "/enter/google/", googleAuthentication
+
+    app.get "/accept/google/", (req, res) ->
+        googleAuthentication
+        (req, res) ->
+            res.redirect "/app"

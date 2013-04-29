@@ -2,15 +2,8 @@ express = require "express"
 log = require "./log"
 lessCompiler = require "./lessCompiler"
 icedCompiler = require "./icedCompiler"
-require "express-resource"
 resources = require "./resources"
 mongoose = require "mongoose"
-models = require "./models/models"
-auth = require "./auth"
-http = require 'http'
-socket = require 'socket.io'
-bus = require './bus'
-passport = require 'passport'
 
 connectionString = process.env.CONNECTION_STRING or "mongodb://localhost/expenses"
 port = process.env.PORT or 3000
@@ -20,8 +13,6 @@ mongoose.connect connectionString, (error) ->
 	log.info "Connected to #{connectionString}." unless error
 
 app = express()
-server = http.createServer app
-io = socket.listen server
 
 frontDir = __dirname + "/../front"
 
@@ -32,13 +23,8 @@ app.use express.session
 
 app.use lessCompiler frontDir
 app.use icedCompiler frontDir
-
-app.use passport.initialize()
-app.use passport.session()
   
-app.use auth
-
-app.use express.static frontDir + "/lib"
+app.use express.static frontDir + "/lib"	
 
 app.set "view engine", "jade"
 app.set "views", __dirname + "/views"
@@ -53,6 +39,9 @@ guard = (req, res, next) ->
 		res.statusCode = 403
 		res.end()
 
+require("./auth") app
+require "express-resource"
+
 # app.all "/expenses", guard
 #app.use "/expenses", guard
 
@@ -61,5 +50,5 @@ guard = (req, res, next) ->
 # app.resource "places", resources.places
 # app.resource "prices", resources.prices
 
-server.listen port, -> 
+app.listen port, -> 
 	log.info "Listening on #{port}..."

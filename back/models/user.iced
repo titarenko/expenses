@@ -10,6 +10,8 @@ User = mongoose.Schema
 		type: String
 	encodedPassword:
 		type: String
+	googleId:
+		type: String
 	registrationDate:
 		type: Date
 		default: -> Date.now()
@@ -33,6 +35,15 @@ User.methods.setPasswordSync = (password, confirmation) ->
 User.methods.verifyPasswordSync = (password) ->
 	bcrypt.compareSync password, @encodedPassword
 
+User.statics.getOrCreateByGoogleId = (params, done) ->
+	query = googleId: params.googleId
+	options = upsert: true
+	sort = {}
+	update = $set: 
+		googleId: params.googleId
+		email: params.email
+	@collection.findAndModify query, sort, update, options, done
+
 User.pre "validate", (next) ->
 	@name = @email unless @name
 	next()
@@ -41,10 +52,5 @@ User.pre "save", (next) ->
 	@username = @username?.toLowerCase()
 	@email = @email?.toLowerCase()
 	next()
-try
-	module.exports = mongoose.model "users", User
-catch e
-	console.log "error"
-	throw e
 
-
+module.exports = mongoose.model "users", User
