@@ -43,11 +43,10 @@ describe "User", ->
 				googleId: "3l5jhkg235hjt545",
 				email: "greatnewemail@gmail.com"
 			User.getOrCreateByGoogleId params, (error, user) ->
-				throw error if error?
-			User.getByNameOrEmail "greatnewemail@gmail.com", (error, user) ->
-				user.email.should.eql "greatnewemail@gmail.com"
-				user.googleId.should.eql "3l5jhkg235hjt545"
-				done()
+				User.getByNameOrEmail "greatnewemail@gmail.com", (error, user) ->
+					user.email.should.eql "greatnewemail@gmail.com"
+					user.googleId.should.eql "3l5jhkg235hjt545"
+					done()
 
 		it "should get user with GoggleId if it's already present", (done) ->
 			params = 
@@ -74,9 +73,19 @@ describe "User", ->
 			model = new User
 			(-> model.setPasswordSync "123", "456").should.throw()
 
+		it "should not store password as is", ->
+			model = new User
+			model.setPasswordSync "123", "123"
+			model.encodedPassword.should.not.eql "123"
+
 	describe "#verifyPasswordSync()", ->
 
-		it "should work in sync with #setPasswordSync()", ->
+		it "should return true if passwords match", ->
 			model = new User
 			model.setPasswordSync "123", "123"
 			model.verifyPasswordSync("123").should.eql true
+
+		it "should return false if passwords don't match", ->
+			model = new User
+			model.setPasswordSync "123", "123"
+			model.verifyPasswordSync("456").should.eql false
