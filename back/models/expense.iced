@@ -1,8 +1,9 @@
 mongoose = require "mongoose"
 require 'datejs'
-
+multitenant = require './multitenant'
+	
 Expense = mongoose.Schema
-	item: 
+	item:
 		type: String
 		required: true
 	place: 
@@ -16,32 +17,44 @@ Expense = mongoose.Schema
 		type: Number
 		required: true
 		min: 0.01
+	user:
+		index: true
+		type: mongoose.Schema.Types.ObjectId
+		required: true
 
-Expense.statics.getAll = (done) ->
-	@find().sort("-date").exec done
+Expense.statics.getAll = (user, done) ->
+	@find(user: user).sort("-date").exec done
 
-Expense.statics.getLast =(done) ->
-	@find().sort("-date").limit(20).exec done
+Expense.statics.getLast =(user, done) ->
+	@find(user: user).sort("-date").limit(20).exec done
 
-Expense.statics.getBetween = (begin, end, done) ->
-	@find(date: $gte: begin, $lt: end).sort("-date").exec done
+Expense.statics.getBetween = (user, begin, end, done) ->
+	@find(user: user, date: $gte: begin, $lt: end).sort("-date").exec done
 
-Expense.statics.getThisWeek = (done) ->
+Expense.statics.getThisWeek = (user, done) ->
 	startOfWeek = (new Date).clearTime().previous().monday()
 	endOfWeek = startOfWeek.clone().addDays 7
 	@getBetween startOfWeek, endOfWeek, done
 
-Expense.statics.getThisMonth = (done) ->
+Expense.statics.getThisMonth = (user, done) ->
 	startOfMonth = (new Date).clearTime().moveToFirstDayOfMonth()
 	endOfMonth = startOfMonth.clone().addMonths 1
 	@getBetween startOfMonth, endOfMonth, done
 
-Expense.statics.removeAll = (done) ->
-	@collection.remove {}, {w: 0}, done
+Expense.statics.removeAll = (user, done) ->
+	@collection.remove {user: user}, {w: 0}, done
 
 Expense.pre "save", (next) ->
 	@item = @item?.toLowerCase()
 	@place = @place?.toLowerCase()
 	next()
 
-module.exports = mongoose.model "expenses", Expense
+model = mongoose.model "expenses", Expense
+module.exports = multitenant model, [
+	"getAll"
+	"getLast"
+	"getBetween"
+	"getThisWeek"
+	"getThisMonth"
+	"removeAll"
+]

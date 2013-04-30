@@ -1,5 +1,9 @@
-Expense = require '../../../back/models/expense'
 mongoose = require 'mongoose'
+
+tenant = new mongoose.Types.ObjectId
+
+Expense = (require '../../../back/models/expense').forTenant tenant
+
 async = require "async"
 sinon = require 'sinon'
 should = require 'should'
