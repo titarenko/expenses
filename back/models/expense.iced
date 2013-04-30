@@ -1,6 +1,5 @@
 mongoose = require "mongoose"
 require 'datejs'
-bus = require '../bus'
 
 Expense = mongoose.Schema
 	item: 
@@ -44,8 +43,5 @@ Expense.pre "save", (next) ->
 	@item = @item?.toLowerCase()
 	@place = @place?.toLowerCase()
 	next()
-
-Expense.post "save", (next) ->
-	bus.emit "add:expense", @
 
 module.exports = mongoose.model "expenses", Expense
