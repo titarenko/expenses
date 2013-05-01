@@ -19,7 +19,7 @@ module.exports =
 	expenses:
 		index: (req, res) ->
 			method = (week: "getThisWeek", month: "getThisMonth")[req.query.range] or "getAll"
-			Expense.forTenant(req.user)[method] respond arguments
+			ExpenseBase.forTenant(req.user)[method] respond arguments
 		create: (req, res) ->
 			Expense = ExpenseBase.forTenant req.user
 			async.series [
@@ -32,11 +32,11 @@ module.exports =
 			], (error) -> respond([req, res]) error, {}
 	items:
 		index: (req, res) ->
-			Item.forTenant(req.user).getFrequent respond arguments
+			ItemBase.forTenant(req.user).getFrequent respond arguments
 	places:
 		index: (req, res) ->
-			Place.forTenant(req.user).getFrequent req.query.item, respond arguments
+			PlaceBase.forTenant(req.user).getFrequent req.query.item, respond arguments
 	prices:
 		index: (req, res) ->
-			Price.forTenant(req.user).getLatest req.query.item, req.query.place, (error, price) ->
+			PriceBase.forTenant(req.user).getLatest req.query.item, req.query.place, (error, price) ->
 				respond([req, res]) error, price

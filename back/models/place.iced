@@ -1,4 +1,5 @@
 mongoose = require "mongoose"
+multitenant = require './multitenant'
 
 Place = mongoose.Schema
 	name:
@@ -15,13 +16,17 @@ Place = mongoose.Schema
 
 Place.index {name: 1, item: 1}, {unique: true}
 
-Place.statics.hit = (item, place, done) ->
-	query = name: place.toLowerCase(), item: item.toLowerCase()
+Place.statics.hit = (user, item, place, done) ->
+	query = user: user, name: place.toLowerCase(), item: item.toLowerCase()
 	modification = $inc: frequency: 1
 	options = upsert: true
 	@update query, modification, options, done
 
-Place.statics.getFrequent = (item, done) ->
-	@find(item: item.toLowerCase()).sort("-frequency").limit(20).exec done
+Place.statics.getFrequent = (user, item, done) ->
+	@find(user: user, item: item.toLowerCase()).sort("-frequency").limit(20).exec done
 
-module.exports = mongoose.model "places", Place
+model = mongoose.model "places", Place
+module.exports = multitenant model, [
+	"hit"
+	"getFrequent"
+]

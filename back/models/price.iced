@@ -1,4 +1,5 @@
 mongoose = require "mongoose"
+multitenant = require './multitenant'
 
 Price = mongoose.Schema
 	item:
@@ -14,14 +15,18 @@ Price = mongoose.Schema
 
 Price.index {item: 1, place: 1}, {unique: true}
 
-Price.statics.hit = (item, place, price, done) ->
-	query = item: item.toLowerCase(), place: place.toLowerCase()
+Price.statics.hit = (user, item, place, price, done) ->
+	query = user: user, item: item.toLowerCase(), place: place.toLowerCase()
 	modification = $set: value: price
 	options = upsert: true
 	@update query, modification, options, done
 
-Price.statics.getLatest = (item, place, done) ->
-	query = place: place.toLowerCase(), item: item.toLowerCase()
+Price.statics.getLatest = (user, item, place, done) ->
+	query = user: user, place: place.toLowerCase(), item: item.toLowerCase()
 	@findOne(query).exec done
 
-module.exports = mongoose.model "prices", Price
+model = mongoose.model "prices", Price
+module.exports = multitenant model, [
+	"hit"
+	"getLatest"
+]
