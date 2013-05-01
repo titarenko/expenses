@@ -7,12 +7,24 @@ mongoose = require "mongoose"
 require "express-resource"
 auth = require './auth'
 
+##########
+# Config #
+##########
+
 connectionString = process.env.CONNECTION_STRING or "mongodb://localhost/expenses"
 port = process.env.PORT or 3000
+
+#################
+# DB connection #
+#################
 
 mongoose.connect connectionString, (error) ->
 	log.error error if error
 	log.info "Connected to #{connectionString}." unless error
+
+#######################
+# Web server start up #
+#######################
 
 app = express()
 
@@ -21,7 +33,7 @@ frontDir = __dirname + "/../front"
 app.use express.bodyParser()
 app.use express.cookieParser()
 app.use express.session
-  secret: "expenses-app"
+  secret: "zsldhI&*Y*&Hlkasjd"
 
 app.use lessCompiler frontDir
 app.use icedCompiler frontDir
@@ -39,20 +51,9 @@ app.get "/", (req, res) ->
 app.get "/app", (req, res) ->
 	res.render "app"
 
-guard = (req, res, next) ->
-	if req.isAuthenticated()
-		next()
-	else
-		res.statusCode = 403
-		res.end()
-
-# app.all "/expenses", guard
-# app.use "/expenses", guard
-
-app.resource "expenses", resources.expenses
-app.resource "items", resources.items
-app.resource "places", resources.places
-app.resource "prices", resources.prices
+for resource, impl of resources
+	auth.protect "/#{resource}"
+	app.resource resource, impl
 
 app.listen port, -> 
 	log.info "Listening on #{port}..."

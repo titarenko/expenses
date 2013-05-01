@@ -34,6 +34,10 @@ require ["marionette", "dot", "routers", "bus", "jquery"], (Marionette, doT, rou
 	Marionette.TemplateCache::compileTemplate = (rawTemplate) ->
 		doT.template rawTemplate
 
+	$(document).ajaxComplete (e, o) ->
+		if o.status == 403
+			location.href = "/"
+
 	app = new Marionette.Application
 
 	app.addRegions

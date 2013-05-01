@@ -3,7 +3,8 @@ User = require './models/user'
 GoogleStrategy = require("passport-google-oauth").OAuth2Strategy
 util = require 'util'
 
-module.exports = (app) ->
+init = (app) ->
+	@app = app
 	
 	app.use passport.initialize()
 	app.use passport.session()
@@ -33,3 +34,15 @@ module.exports = (app) ->
 
 	app.get "/accept/google", passport.authenticate("google"), (req, res) ->
 		res.redirect "/app"
+
+guard = (req, res, next) ->
+	if req.isAuthenticated()
+		next()
+	else
+		res.statusCode = 403
+		res.end()
+
+init.protect = (path) -> 
+	app.all path, guard
+
+module.exports = init
