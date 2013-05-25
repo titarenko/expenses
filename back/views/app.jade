@@ -1,10 +1,10 @@
 mixin field(title, name, type)
 	.field
-		label(for=name||title) #{title}
-		input(id=name||title, name=name||title, type=type||"text")
+		label(for=name||title.toLowerCase()) #{title}
+		input(id=name||title.toLowerCase(), name=name||title.toLowerCase(), type=type||"text")
 
 mixin button(text, action)
-	button(id=action||text) #{text}
+	button(id=action||text.toLowerCase()) #{text}
 
 !!!
 html	
@@ -17,37 +17,37 @@ html
 		#viewport
 
 		script#main-menu-template(type="text/template")
-			h1 expenses
-			a.button(href="#add") add expense
-			a.button(href="#history/week") show this week
-			a.button(href="#history/month") show this month
-			a.button(href="#history") show everything
+			h1 Expenses
+			a.button(href="#add") Add expense
+			a.button(href="#history/week") Show this week
+			a.button(href="#history/month") Show this month
+			a.button(href="#history") Show everything
 
 		script#option-template(type="text/template")
 			button.option {{=it.name}}
 
 		script#options-template(type="text/template")
-			h1 select option
+			h1 Select Option
 			#options
-			mixin button("new")
+			mixin button("New")
 
 		script#expense-editor-template(type="text/template")
-			h1 edit expense
-			mixin field("what")
-			mixin field("where")
-			mixin field("price", "price", "number")
-			mixin button("save")
-			a.button(href="#") cancel
+			h1 Edit Expense
+			mixin field("What")
+			mixin field("Where")
+			mixin field("Price", "price", "number")
+			mixin button("Save")
+			a.button(href="#") Cancel
 
 		script#login-template(type="text/template")
 			a.button(href="/auth/google") Login via Google
 
 		script#statistics-template(type="text/template")
-			h1 history
+			h1 History
 			#chart
 			#history
 			div
-				a.button(href="#") back
+				a.button(href="#") Back
 
 		script#history-item-template(type="text/template")
 			.history-entity
@@ -64,7 +64,7 @@ html
 			p Loading, please wait...
 
 		script#expenses-template(type="text/template")
-			h1 history
+			h1 History
 			p
 				strong 
 					| Total:&nbsp;
