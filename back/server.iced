@@ -46,7 +46,10 @@ app.set "views", __dirname + "/views"
 auth app
 
 app.get "/", (req, res) ->
-	res.render "landing"
+	if req.isAuthenticated()
+		res.redirect "/app"
+	else
+		res.render "landing"
 
 app.get "/app", (req, res) ->
 	res.render "app"
