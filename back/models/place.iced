@@ -17,13 +17,13 @@ Place = mongoose.Schema
 Place.index {name: 1, item: 1}, {unique: true}
 
 Place.statics.hit = (user, item, place, done) ->
-	query = user: user, name: place.toLowerCase(), item: item.toLowerCase()
+	query = user: user, name: place, item: item
 	modification = $inc: frequency: 1
 	options = upsert: true
 	@update query, modification, options, done
 
 Place.statics.getFrequent = (user, item, done) ->
-	@find(user: user, item: item.toLowerCase()).sort("-frequency").limit(20).exec done
+	@find(user: user, item: item).sort("-frequency").limit(20).exec done
 
 model = mongoose.model "places", Place
 module.exports = multitenant model, [

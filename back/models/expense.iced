@@ -44,11 +44,6 @@ Expense.statics.getThisMonth = (user, done) ->
 Expense.statics.removeAll = (user, done) ->
 	@collection.remove {user: user}, {w: 0}, done
 
-Expense.pre "save", (next) ->
-	@item = @item?.toLowerCase()
-	@place = @place?.toLowerCase()
-	next()
-
 model = mongoose.model "expenses", Expense
 module.exports = multitenant model, [
 	"getAll"

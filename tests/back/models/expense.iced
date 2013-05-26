@@ -106,16 +106,6 @@ describe "Expense", ->
 				should.not.exist error
 				done()
 
-		it "should perform lower case coversion on save", (done) ->
-			model = new Expense
-				price: 10.90
-				item: "Cake"
-				place: "ATB"
-			model.save (error) ->
-				model.item.should.eql "cake"
-				model.place.should.eql "atb"
-				done()
-
 		it "should set date to current by default", (done) ->
 			model = new Expense
 				price: 0.10

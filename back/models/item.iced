@@ -13,7 +13,7 @@ Item = mongoose.Schema
 		min: 0
 
 Item.statics.hit = (user, item, done) ->
-	query = user: user, name: item.toLowerCase()
+	query = user: user, name: item
 	modification = $inc: frequency: 1
 	options = upsert: true
 	@update query, modification, options, done
