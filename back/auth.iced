@@ -20,7 +20,7 @@ init = (app) ->
 				done
 
 	passport.serializeUser (user, done) ->
-		done null, user._id
+		done null, user._id.toString()
 
 	passport.deserializeUser (id, done) ->
 		done null, new User _id: id
@@ -34,6 +34,10 @@ init = (app) ->
 
 	app.get "/accept/google", passport.authenticate("google"), (req, res) ->
 		res.redirect "/app"
+
+	app.get "/logout", (req, res) ->
+		req.logout()
+		res.redirect "/"
 
 guard = (req, res, next) ->
 	if req.isAuthenticated()
