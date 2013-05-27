@@ -41,6 +41,7 @@ User.statics.getOrCreateByGoogleId = (params, done) ->
 	options = upsert: true
 	sort = {}
 	update = $set: 
+		name: params.name or params.email
 		googleId: params.googleId
 		email: params.email
 	@collection.findAndModify query, sort, update, options, done
@@ -50,8 +51,7 @@ User.pre "validate", (next) ->
 	next()
 
 User.pre "save", (next) ->
-	@username = @username?.toLowerCase()
-	@email = @email?.toLowerCase()
+	@name = @email unless @name
 	next()
 
 module.exports = mongoose.model "users", User
