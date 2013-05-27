@@ -38,7 +38,7 @@ describe "User", ->
 
 	describe "#getOrCreateByGoogleId()", ->
 
-		it "should create user with GoggleId if it's not present", (done) ->
+		it "should create user with GoogleId if it's not present", (done) ->
 			params = 
 				googleId: "3l5jhkg235hjt545",
 				email: "greatnewemail@gmail.com"
@@ -48,7 +48,7 @@ describe "User", ->
 					user.googleId.should.eql "3l5jhkg235hjt545"
 					done()
 
-		it "should get user with GoggleId if it's already present", (done) ->
+		it "should get user with GoogleId if it's already present", (done) ->
 			params = 
 				googleId: "3l5jhkg235hjt545dfdkjhf",
 				email: "greatnewemail12345@gmail.com"
