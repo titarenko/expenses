@@ -29,12 +29,26 @@ require.config
 			deps:["highcharts"]
 		linqjs: exports: "linqjs"
 
-require ["marionette", "dot", "routers", "bus", "jquery"], (Marionette, doT, routers, bus, $) ->
+require ["marionette", "dot", "routers", "bus", "jquery", "spinner"], (Marionette, doT, routers, bus, $, Spinner) ->
 
 	Marionette.TemplateCache::compileTemplate = (rawTemplate) ->
 		doT.template rawTemplate
 
+	spinner = new Spinner
+		color: "#aaa"
+		radius: 5
+		width: 3
+		length: 12
+
+	$(document).ajaxStart ->
+		spinner.spin document.getElementById "spinner"
+
+	$(document).ajaxStop ->
+		spinner.stop()
+
 	$(document).ajaxComplete (e, o) ->
+		if o.status == 500
+			alert o.responseText
 		if o.status == 403
 			location.href = "/"
 

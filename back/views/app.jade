@@ -14,12 +14,11 @@ html
 		link(href="fonts.googleapis.com.css", rel="stylesheet", type="text/css")
 		script(src="require_v2.1.5.min.js", data-main="app", type="text/javascript")
 	body
+		#spinner
 		#viewport
 
 		script#main-menu-template(type="text/template")
-			h1
-				#spinner
-				| Expenses
+			h1 Expenses
 			a.button(href="#add") Add expense
 			a.button(href="#history/week") Show this week
 			a.button(href="#history/month") Show this month
@@ -35,9 +34,7 @@ html
 			mixin button("New")
 
 		script#expense-editor-template(type="text/template")
-			h1 
-				# spinner
-				| Edit Expense
+			h1 Edit Expense
 			mixin field("What")
 			mixin field("Where")
 			mixin field("Price", "price", "number")
@@ -48,9 +45,7 @@ html
 			a.button(href="/auth/google") Login via Google
 
 		script#statistics-template(type="text/template")
-			h1 
-				#spinner
-				| History
+			h1 History
 			#chart
 			#history
 			div
@@ -71,9 +66,7 @@ html
 			p Sorry, nothing to show yet...
 
 		script#expenses-template(type="text/template")
-			h1 
-				#spinner
-				| History
+			h1 History
 			p
 				strong 
 					| Total:&nbsp;
