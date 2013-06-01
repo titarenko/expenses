@@ -20,7 +20,7 @@ init = (app) ->
 				done
 
 	passport.serializeUser (user, done) ->
-		done null, user._id.toString()
+		done null, user?._id?.toString()
 
 	passport.deserializeUser (id, done) ->
 		done null, new User _id: id
