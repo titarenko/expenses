@@ -17,7 +17,9 @@ html
 		#viewport
 
 		script#main-menu-template(type="text/template")
-			h1 Expenses
+			h1
+				#spinner
+				| Expenses
 			a.button(href="#add") Add expense
 			a.button(href="#history/week") Show this week
 			a.button(href="#history/month") Show this month
@@ -33,7 +35,9 @@ html
 			mixin button("New")
 
 		script#expense-editor-template(type="text/template")
-			h1 Edit Expense
+			h1 
+				# spinner
+				| Edit Expense
 			mixin field("What")
 			mixin field("Where")
 			mixin field("Price", "price", "number")
@@ -44,7 +48,9 @@ html
 			a.button(href="/auth/google") Login via Google
 
 		script#statistics-template(type="text/template")
-			h1 History
+			h1 
+				#spinner
+				| History
 			#chart
 			#history
 			div
@@ -62,10 +68,12 @@ html
 			.container
 
 		script#empty-template(type="text/template")
-			p Loading, please wait...
+			p Sorry, nothing to show yet...
 
 		script#expenses-template(type="text/template")
-			h1 History
+			h1 
+				#spinner
+				| History
 			p
 				strong 
 					| Total:&nbsp;
