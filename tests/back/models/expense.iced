@@ -10,7 +10,12 @@ should = require 'should'
 
 describe "Expense", ->
 
-	before (done) ->
+	clock = null
+
+	beforeEach (done) ->
+		now = new Date 2012, 3, 20
+		clock = sinon.useFakeTimers now.getTime()
+
 		saveExpense = (month, day, done) ->
 			(new Expense
 				category: "misc"
@@ -28,6 +33,10 @@ describe "Expense", ->
 			(done) -> async.parallel january.concat(februaryToApril.concat(april)), done
 		], done
 
+	afterEach (done) ->
+		clock.restore()
+		Expense.removeAll done
+
 	describe "#getThisWeek()", ->
 		
 		it "should return expenses from this week only", (done) ->
@@ -36,10 +45,27 @@ describe "Expense", ->
 				done()
 
 		it "should return expenses sorted by date in descending order", (done) ->
-			Expense.getThisMonth (error, collection) ->
+			Expense.getThisWeek (error, collection) ->
 				collection[0].date.should.eql new Date 2012, 3, 20
 				collection[1].date.should.eql new Date 2012, 3, 19
 				done()
+
+		it "should work if current day is Monday", (done) ->
+			today = new Date 2013, 5, 3
+			clock = sinon.useFakeTimers today.getTime()
+			model = new Expense
+				category: "misc"
+				item: "milk"
+				place: "atb"
+				price: 10.34
+			model.save (error) ->
+				should.not.exist error
+				Expense.getThisWeek (error, collection) ->
+					clock.restore()
+					collection.length.should.eql 1
+					collection[0].item.should.eql "milk"
+					collection[0].price.should.eql 10.34
+					done()
 
 	describe "#getThisMonth()", ->
 
