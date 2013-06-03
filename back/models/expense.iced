@@ -3,6 +3,9 @@ require 'datejs'
 multitenant = require './multitenant'
 	
 Expense = mongoose.Schema
+	category:
+		type: String
+		required: true
 	item:
 		type: String
 		required: true
@@ -25,7 +28,7 @@ Expense = mongoose.Schema
 Expense.statics.getAll = (user, done) ->
 	@find(user: user).sort("-date").exec done
 
-Expense.statics.getLast =(user, done) ->
+Expense.statics.getLast = (user, done) ->
 	@find(user: user).sort("-date").limit(20).exec done
 
 Expense.statics.getBetween = (user, begin, end, done) ->
