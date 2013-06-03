@@ -11,7 +11,7 @@ auth = require './auth'
 # Config #
 ##########
 
-connectionString = process.env.CONNECTION_STRING or "mongodb://localhost/expenses"
+connectionString = process.env.MONGO_CS or "mongodb://localhost/expenses"
 port = process.env.PORT or 3000
 
 #################

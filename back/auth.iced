@@ -10,9 +10,9 @@ init = (app) ->
 	app.use passport.session()
 
 	passport.use new GoogleStrategy
-		clientID: "836427388747.apps.googleusercontent.com"
-		clientSecret: "lMF07R7txxWa_scy0S1D_y6Y"
-		callbackURL: "http://localhost:3000/accept/google/",
+		clientID: process.env.GOOGLE_APP_ID or "836427388747.apps.googleusercontent.com"
+		clientSecret: process.env.GOOGLE_APP_SECRET or "lMF07R7txxWa_scy0S1D_y6Y"
+		callbackURL: process.env.GOOGLE_APP_REDIRECT or "http://localhost:3000/accept/google/",
 		(accessToken, refreshToken, profile, done) ->
 			User.getOrCreateByGoogleId
 				googleId: profile._json.id 
