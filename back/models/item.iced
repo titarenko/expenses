@@ -2,6 +2,9 @@ mongoose = require "mongoose"
 multitenant = require './multitenant'
 
 Item = mongoose.Schema
+	category:
+		type: String
+		required: true
 	name:
 		type: String
 		required: true
@@ -18,8 +21,8 @@ Item.statics.hit = (user, item, done) ->
 	options = upsert: true
 	@update query, modification, options, done
 
-Item.statics.getFrequent = (user, done) ->
-	@find(user: user).sort("-frequency").limit(20).exec done
+Item.statics.getFrequent = (user, category, done) ->
+	@find(user: user, category: category).sort("-frequency").limit(20).exec done
 
 model = mongoose.model "items", Item
 module.exports = multitenant model, [
