@@ -10,6 +10,10 @@ Category = mongoose.Schema
 		required: true
 		index: true
 		min: 0
+	user:
+		index: true
+		type: mongoose.Schema.Types.ObjectId
+		required: true
 
 Category.statics.hit = (user, category, done) ->
 	query = user: user, name: category
