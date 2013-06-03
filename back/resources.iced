@@ -3,6 +3,7 @@ ExpenseBase = require './models/expense'
 ItemBase = require './models/item'
 PlaceBase = require './models/place'
 PriceBase = require "./models/price"
+CategoryBase = require "./models/category"
 log = require "./log"
 
 respond = (params) ->
@@ -25,14 +26,15 @@ module.exports =
 			async.series [
 				(done) -> (new Expense req.body).save done
 				(done) -> async.parallel [
-					(done) -> ItemBase.forTenant(req.user).hit req.body.item, done
+					(done) -> CategoryBase.forTenant(req.user).hit req.body.category, done
+					(done) -> ItemBase.forTenant(req.user).hit req.body.category, req.body.item, done
 					(done) -> PlaceBase.forTenant(req.user).hit req.body.item, req.body.place, done
 					(done) -> PriceBase.forTenant(req.user).hit req.body.item, req.body.place, req.body.price, done
 				], done
 			], (error) -> respond([req, res]) error, {}
 	items:
 		index: (req, res) ->
-			ItemBase.forTenant(req.user).getFrequent respond arguments
+			ItemBase.forTenant(req.user).getFrequent req.query.category, respond arguments
 	places:
 		index: (req, res) ->
 			PlaceBase.forTenant(req.user).getFrequent req.query.item, respond arguments
@@ -40,3 +42,6 @@ module.exports =
 		index: (req, res) ->
 			PriceBase.forTenant(req.user).getLatest req.query.item, req.query.place, (error, price) ->
 				respond([req, res]) error, price
+	categories:
+		index: (req, res) ->
+			CategoryBase.forTenant(req.user).getFrequent respond arguments

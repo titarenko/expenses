@@ -15,8 +15,8 @@ Item = mongoose.Schema
 		index: true
 		min: 0
 
-Item.statics.hit = (user, item, done) ->
-	query = user: user, name: item
+Item.statics.hit = (user, category, item, done) ->
+	query = user: user, category: category, name: item
 	modification = $inc: frequency: 1
 	options = upsert: true
 	@update query, modification, options, done
