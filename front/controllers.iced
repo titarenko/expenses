@@ -10,7 +10,7 @@ define ["bus", "views", "models"], (bus, views, models) ->
 
 	ExpenseWizardController:
 		showFrequentCategories: ->
-			categories = new models.Categories
+			categories = new models.FrequentCategories
 
 			categories.on "selected", (model) ->
 				bus.trigger "navigate", "add-expense-items", category: model.get "name"
@@ -31,7 +31,9 @@ define ["bus", "views", "models"], (bus, views, models) ->
 
 			bus.trigger "show", new views.Options collection: items
 			
-			items.fetch()
+			items.fetch
+				data:
+					category: category
 
 		showFrequentPlaces: (category, item) ->
 			places = new models.FrequentPlaces

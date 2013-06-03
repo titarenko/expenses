@@ -40,6 +40,7 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 			@listenTo @model, "change:price", @updatePrice
 
 		onRender: ->
+			@ui.category.val @model.get "category"
 			@ui.item.val @model.get "item"
 			@ui.place.val @model.get "place"
 			@updatePrice()
