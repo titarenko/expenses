@@ -13,6 +13,7 @@ describe "Expense", ->
 	before (done) ->
 		saveExpense = (month, day, done) ->
 			(new Expense
+				category: "misc"
 				item: "milk"
 				place: "amstor"
 				price: 10
@@ -83,6 +84,7 @@ describe "Expense", ->
 
 		it "should not allow to save expense with price less than 0.01", (done) ->
 			model = new Expense
+				category: "misc"
 				price: 0.001
 				item: "meat"
 				place: "objora"
@@ -92,6 +94,7 @@ describe "Expense", ->
 
 		it "should not allow to save expense with empty item name", (done) ->
 			model = new Expense
+				category: "misc"
 				price: 0.10
 				place: "amstor"
 			model.save (error) ->
@@ -100,6 +103,7 @@ describe "Expense", ->
 
 		it "should allow to save expense without place", (done) ->
 			model = new Expense
+				category: "misc"
 				price: 10.25
 				item: "milk"
 			model.save (error) ->
@@ -108,6 +112,7 @@ describe "Expense", ->
 
 		it "should set date to current by default", (done) ->
 			model = new Expense
+				category: "misc"
 				price: 0.10
 				item: "meat"
 			model.save (error) ->
