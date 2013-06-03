@@ -1,8 +1,6 @@
 define ["bus", "views", "models"], (bus, views, models) ->
 
-	exports = {}
-
-	exports.MainMenuController =
+	MainMenuController:
 		showMenu: ->
 			bus.trigger "show", new views.MainMenu
 		showHistory: (range) ->
@@ -10,7 +8,7 @@ define ["bus", "views", "models"], (bus, views, models) ->
 			bus.trigger "show", new views.Expenses collection: expenses
 			expenses.fetch data: range: range
 
-	exports.ExpenseWizardController =
+	ExpenseWizardController:
 		showFrequentItems: ->
 			items = new models.FrequentItems
 
@@ -63,11 +61,11 @@ define ["bus", "views", "models"], (bus, views, models) ->
 						item: item 
 						place: place
 
-	exports.AuthController = 
+	AuthController: 
 		showLogin: ->
 			bus.trigger "show", new views.Login
 
-	exports.HistoryController = 
+	HistoryController: 
 		showHistory:->
 			layout = new views.StatisticsLayout
 			bus.trigger "show", layout
@@ -79,5 +77,3 @@ define ["bus", "views", "models"], (bus, views, models) ->
 			layout.chart.show new views.Chart collection: lastExpenses
 
 			lastExpenses.fetch()
-
-	exports
