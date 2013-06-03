@@ -35,6 +35,7 @@ html
 
 		script#expense-editor-template(type="text/template")
 			h1 Edit Expense
+			mixin field("Category")
 			mixin field("What")
 			mixin field("Where")
 			mixin field("Price", "price", "number")

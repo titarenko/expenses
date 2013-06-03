@@ -9,25 +9,37 @@ define ["bus", "views", "models"], (bus, views, models) ->
 			expenses.fetch data: range: range
 
 	ExpenseWizardController:
-		showFrequentItems: ->
+		showFrequentCategories: ->
+			categories = new models.Categories
+
+			categories.on "selected", (model) ->
+				bus.trigger "navigate", "add-expense-items", category: model.get "name"
+			categories.on "skipped", ->
+				bus.trigger "navigate", "add-expense-editor"
+
+			bus.trigger "show", new views.Options collection: categories
+
+			categories.fetch()
+
+		showFrequentItems: (category) ->
 			items = new models.FrequentItems
 
 			items.on "selected", (model) -> 
-				bus.trigger "navigate", "add-expense-places", item: model.get "name"
+				bus.trigger "navigate", "add-expense-places", category: category, item: model.get "name"
 			items.on "skipped", ->
-				bus.trigger "navigate", "add-expense-editor"
+				bus.trigger "navigate", "add-expense-editor", category: category
 
 			bus.trigger "show", new views.Options collection: items
 			
 			items.fetch()
 
-		showFrequentPlaces: (item) ->
+		showFrequentPlaces: (category, item) ->
 			places = new models.FrequentPlaces
 			
 			places.on "selected", (model) -> 
-				bus.trigger "navigate", "add-expense-editor", item: item, place: model.get "name"
+				bus.trigger "navigate", "add-expense-editor", category: category, item: item, place: model.get "name"
 			places.on "skipped", ->
-				bus.trigger "navigate", "add-expense-editor", item: item
+				bus.trigger "navigate", "add-expense-editor", category: category, item: item
 
 			bus.trigger "show", new views.Options collection: places
 
@@ -36,10 +48,11 @@ define ["bus", "views", "models"], (bus, views, models) ->
 					data: 
 						item: item
 
-		showExpenseEditor: (item, place) ->
+		showExpenseEditor: (category, item, place) ->
 			price = new models.LatestPrice
 			
 			model = new models.Expense
+				category: category
 				item: item
 				place: place
 

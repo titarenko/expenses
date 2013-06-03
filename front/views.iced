@@ -28,6 +28,7 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 		template: "#expense-editor-template"
 
 		ui:
+			category: "#category"
 			item: "#what"
 			place: "#where"
 			price: "#price"
@@ -48,6 +49,7 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 
 		saveExpense: ->
 			@model.set
+				category: @ui.category.val()
 				item: @ui.item.val()
 				place: @ui.place.val()
 				price: @ui.price.val()

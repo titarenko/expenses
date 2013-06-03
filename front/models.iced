@@ -1,26 +1,25 @@
 define ["backbone"], (Backbone) ->
 
-	exports = {}
-
-	exports.Expense = Expense = Backbone.Model.extend
+	Expense: Backbone.Model.extend
 		urlRoot: "expenses"
 
-	exports.FrequentItems = Backbone.Collection.extend
+	FrequentCategories: Backbone.Collection.extend
+		url: "categories"
+
+	FrequentItems: Backbone.Collection.extend
 		url: "items"
 
-	exports.FrequentPlaces = Backbone.Collection.extend
+	FrequentPlaces: Backbone.Collection.extend
 		url: "places"
 
-	exports.LatestPrice = Backbone.Model.extend
+	LatestPrice: Backbone.Model.extend
 		url: "prices"
 
-	exports.Login = Backbone.Model.extend()
+	Login: Backbone.Model.extend()
 
-	exports.Expenses = Backbone.Collection.extend
+	Expenses: Backbone.Collection.extend
 		url: "expenses"
 		getTotalPrice: ->
 			reduction = (memo, item) ->
 				memo + item.get "price"
 			@reduce reduction, 0 
-
-	exports

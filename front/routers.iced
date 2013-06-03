@@ -10,9 +10,24 @@ define ["routing", "controllers"], (routing, controllers) ->
 			controller: controllers.MainMenuController
 		new RouteCollection
 			appRoutes:
-				"add-expense-items": url: "add", action: "showFrequentItems"
-				"add-expense-places": url: "add/:item", action: "showFrequentPlaces", item: null
-				"add-expense-editor": url: "add/:item/:place", action: "showExpenseEditor", item: null, place: null
+				"add-expense-categories": 
+					url: "add"
+					action: "showFrequentCategories"
+				"add-expense-items": 
+					url: "add/:category"
+					action: "showFrequentItems"
+					category: null
+				"add-expense-places": 
+					url: "add/:category/:item"
+					action: "showFrequentPlaces"
+					category: null
+					item: null
+				"add-expense-editor": 
+					url: "add/:category/:item/:place"
+					action: "showExpenseEditor"
+					category: null
+					item: null
+					place: null
 			controller: controllers.ExpenseWizardController
 		new RouteCollection
 			appRoutes:
