@@ -36,7 +36,7 @@ Expense.statics.getBetween = (user, begin, end, done) ->
 	@find(user: user, date: $gte: begin, $lt: end).sort("-date").exec done
 
 Expense.statics.getThisWeek = (user, done) ->
-	startOfWeek = (new Date).clearTime().previous().monday()
+	startOfWeek = (new Date).clearTime().addDays(1).previous().monday()
 	endOfWeek = startOfWeek.clone().addDays 7
 	@getBetween startOfWeek, endOfWeek, done
 
