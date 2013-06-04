@@ -36,7 +36,6 @@ Expense.statics.getLast = (user, done) ->
 	@find(user: user).sort("-date").limit(20).exec done
 
 Expense.statics.getBetween = (user, begin, end, done) ->
-	console.log begin, end
 	@find(user: user, date: $gte: begin, $lt: end).sort("-date").exec done
 
 Expense.statics.getThisWeek = (user, done) ->
