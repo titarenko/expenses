@@ -52,6 +52,7 @@ define ["bus", "views", "models"], (bus, views, models) ->
 
 		showExpenseEditor: (category, item, place) ->
 			price = new models.LatestPrice
+			quantity = new models.LatestQuantity
 			
 			model = new models.Expense
 				category: category
@@ -70,11 +71,17 @@ define ["bus", "views", "models"], (bus, views, models) ->
 			price.on "change", ->
 				model.set "price", price.get "value"
 
+			quantity.on "change", ->
+				model.set "quantity", quantity.get "value"
+
 			if item and place
 				price.fetch
 					data: 
 						item: item 
 						place: place
+				quantity.fetch
+					data: 
+						item: item
 
 	AuthController: 
 		showLogin: ->

@@ -20,10 +20,14 @@ Expense = mongoose.Schema
 		type: Number
 		required: true
 		min: 0.01
+	quantity:
+		type: Number
 	user:
 		index: true
 		type: mongoose.Schema.Types.ObjectId
 		required: true
+	comment:
+		type: String
 
 Expense.statics.getAll = (user, done) ->
 	@find(user: user).sort("-date").exec done

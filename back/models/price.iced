@@ -12,6 +12,10 @@ Price = mongoose.Schema
 		type: Number
 		required: true
 		min: 0.01
+	user:
+		index: true
+		type: mongoose.Schema.Types.ObjectId
+		required: true
 
 Price.index {item: 1, place: 1}, {unique: true}
 

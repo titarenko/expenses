@@ -1,4 +1,4 @@
-define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"], (Marionette, HighchartsExporting, highcharts, $, Enumerable) ->
+define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs", "moment"], (Marionette, HighchartsExporting, highcharts, $, Enumerable, moment) ->
 
 	Empty = Marionette.ItemView.extend
 		template: "#empty-template"
@@ -32,21 +32,29 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 			item: "#what"
 			place: "#where"
 			price: "#price"
-
+			quantity: "#quantity"
+			comment: "#comment"
+			date: "#date"
 		events:
 			"click #save": "saveExpense"
 
 		initialize: ->
 			@listenTo @model, "change:price", @updatePrice
+			@listenTo @model, "change:quantity", @updateQuantity
 
 		onRender: ->
 			@ui.category.val @model.get "category"
 			@ui.item.val @model.get "item"
 			@ui.place.val @model.get "place"
+			@ui.date.val moment().format "YYYY-MM-DD"
 			@updatePrice()
+			@updateQuantity()
 
 		updatePrice: ->
 			@ui.price.val @model.get "price"
+
+		updateQuantity: ->
+			@ui.quantity.val @model.get "quantity"
 
 		saveExpense: ->
 			@model.set
@@ -54,6 +62,9 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs"],
 				item: @ui.item.val()
 				place: @ui.place.val()
 				price: @ui.price.val()
+				quantity: @ui.quantity.val()
+				date: moment(@ui.date.val())._d
+				comment: @ui.comment.val()
 			@trigger "done"
 
 	exports.Login = Marionette.ItemView.extend

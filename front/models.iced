@@ -15,6 +15,9 @@ define ["backbone"], (Backbone) ->
 	LatestPrice: Backbone.Model.extend
 		url: "prices"
 
+	LatestQuantity: Backbone.Model.extend
+		url: "quantities"
+
 	Login: Backbone.Model.extend()
 
 	Expenses: Backbone.Collection.extend

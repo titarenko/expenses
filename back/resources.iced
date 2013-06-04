@@ -4,6 +4,7 @@ ItemBase = require './models/item'
 PlaceBase = require './models/place'
 PriceBase = require "./models/price"
 CategoryBase = require "./models/category"
+QuantityBase = require "./models/quantity"
 log = require "./log"
 
 respond = (params) ->
@@ -30,6 +31,7 @@ module.exports =
 					(done) -> ItemBase.forTenant(req.user).hit req.body.category, req.body.item, done
 					(done) -> PlaceBase.forTenant(req.user).hit req.body.item, req.body.place, done
 					(done) -> PriceBase.forTenant(req.user).hit req.body.item, req.body.place, req.body.price, done
+					(done) -> QuantityBase.forTenant(req.user).hit req.body.item, req.body.quantity, done
 				], done
 			], (error) -> respond([req, res]) error, {}
 	items:
@@ -42,6 +44,10 @@ module.exports =
 		index: (req, res) ->
 			PriceBase.forTenant(req.user).getLatest req.query.item, req.query.place, (error, price) ->
 				respond([req, res]) error, price
+	quantities:
+		index: (req, res) ->
+			QuantityBase.forTenant(req.user).getLatest req.query.item, (error, quantity) ->
+				respond([req, res]) error, quantity
 	categories:
 		index: (req, res) ->
 			CategoryBase.forTenant(req.user).getFrequent respond arguments
