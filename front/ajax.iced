@@ -11,7 +11,7 @@ define ["spinner", "jquery"], (Spinner, $) ->
 		page = $ document
 
 		page.ajaxStart ->
-			spinner.spin $ "#spinner"
+			spinner.spin document.getElementById "spinner"
 
 		page.ajaxStop ->
 			spinner.stop()
