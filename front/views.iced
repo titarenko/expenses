@@ -63,7 +63,7 @@ define ["marionette", "highcharts_exporting", "highcharts", "jquery", "linqjs", 
 				place: @ui.place.val()
 				price: @ui.price.val()
 				quantity: @ui.quantity.val()
-				date: moment(@ui.date.val())._d
+				date: moment(@ui.date.val(), "YYYY-MM-DD HH:mm")._d
 				comment: @ui.comment.val()
 			@trigger "done"
 
