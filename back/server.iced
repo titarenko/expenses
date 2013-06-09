@@ -52,7 +52,12 @@ app.get "/", (req, res) ->
 		res.render "landing"
 
 app.get "/app", (req, res) ->
-	res.render "app"
+	host = req.headers.host
+	protocol = req.headers['x-forwarded-proto']
+	if protocol != 'https' and host != "localhost:#{port}" 
+		res.redirect "https://#{host}#{req.url}"
+	else
+		res.render "app"
 
 for resource, impl of resources
 	auth.protect "/#{resource}"
